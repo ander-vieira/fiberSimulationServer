@@ -2,9 +2,9 @@ package com.fibersim.fiberSimulationServer.web.dto;
 
 public class SimulationParamsDTO {
     private String dopant;
-    private double N;
+    private double concentration;
     private double diameter;
-    private double L;
+    private double length;
 
     public String getDopant() {
         return dopant;
@@ -14,12 +14,12 @@ public class SimulationParamsDTO {
         this.dopant = dopant;
     }
 
-    public double getN() {
-        return N;
+    public double getConcentration() {
+        return concentration;
     }
 
-    public void setN(double n) {
-        N = n;
+    public void setConcentration(double concentration) {
+        this.concentration = concentration;
     }
 
     public double getDiameter() {
@@ -30,11 +30,11 @@ public class SimulationParamsDTO {
         this.diameter = diameter;
     }
 
-    public double getL() {
-        return L;
+    public double getLength() {
+        return length;
     }
 
-    public void setL(double l) {
-        L = l;
+    public void setLength(double length) {
+        this.length = length;
     }
 }
