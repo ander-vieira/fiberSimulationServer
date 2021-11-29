@@ -1,5 +1,8 @@
 package com.fibersim.fiberSimulationServer.service.utils;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UnitIntegral {
     private final int numPoints;
 

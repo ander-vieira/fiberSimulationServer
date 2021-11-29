@@ -1,9 +1,9 @@
 package com.fibersim.fiberSimulationServer.service.components;
 
 import com.fibersim.fiberSimulationServer.service.basics.Ray;
-import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 import com.fibersim.fiberSimulationServer.service.constraints.Constraint;
 import com.fibersim.fiberSimulationServer.service.resources.DyeDopant;
+import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 
 public class DyeComponent implements Component {
     private final double N;

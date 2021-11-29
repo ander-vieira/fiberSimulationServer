@@ -5,9 +5,18 @@ import com.fibersim.fiberSimulationServer.service.resources.LambdaRange;
 import com.fibersim.fiberSimulationServer.service.resources.Medium;
 import com.fibersim.fiberSimulationServer.service.resources.PowerSource;
 import com.fibersim.fiberSimulationServer.service.utils.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IterativeSim {
-    public static double[] dyeIterative(String dopantName, double N, double diameter, double q, double L) {
+    @Autowired
+    SideAbsorption sideAbsorption;
+
+    @Autowired
+    GeometricalParams geometricalParams;
+
+    public double[] dyeIterative(String dopantName, double N, double diameter, double q, double L) {
         double dz = 5e-5;
         int numZZ = (int)Math.ceil(L/dz);
 
@@ -35,9 +44,8 @@ public class IterativeSim {
         double[] nClad = clad.refractionIndex.getArray(ll);
         double[] alfaClad = clad.attenuation.getArray(ll);
 
-        GeometricalParams geom = new GeometricalParams(nPMMA);
-        double[] beta = geom.betaB();
-        double[] Kz = geom.KzB();
+        double[] beta = geometricalParams.betaB(nPMMA);
+        double[] Kz = geometricalParams.KzB(nPMMA);
 
         double[] alphaCore = new double[numLL];
         double[] alphaDopant = new double[numLL];
@@ -46,8 +54,7 @@ public class IterativeSim {
             alphaCore[k] = alfaPMMA[k]+alphaDopant[k];
         }
 
-        SideAbsorption sideAbsorption = new SideAbsorption(diameter, q, nPMMA, alphaCore, alphaDopant, nClad, alfaClad);
-        double[] sideEfficiency = sideAbsorption.twoInterphases();
+        double[] sideEfficiency = sideAbsorption.twoInterphases(diameter, q, nPMMA, alphaCore, alphaDopant, nClad, alfaClad);
 
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];

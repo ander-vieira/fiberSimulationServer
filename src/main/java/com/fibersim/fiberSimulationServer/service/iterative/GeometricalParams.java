@@ -1,19 +1,10 @@
 package com.fibersim.fiberSimulationServer.service.iterative;
 
-import com.fibersim.fiberSimulationServer.service.resources.Medium;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GeometricalParams {
-    private final double[] n;
-
-    public GeometricalParams(Medium medium, double[] ll) {
-        this(medium.refractionIndex.getArray(ll));
-    }
-
-    public GeometricalParams(double[] n) {
-        this.n = n.clone();
-    }
-
-    public double[] betaB() {
+    public double[] betaB(double[] n) {
         double[] result = new double[n.length];
 
         for(int k = 0 ; k < n.length ; k++) {
@@ -23,7 +14,7 @@ public class GeometricalParams {
         return result;
     }
 
-    public double[] KzB() {
+    public double[] KzB(double[] n) {
         double[] result = new double[n.length];
 
         for(int k = 0 ; k < n.length ; k++) {
