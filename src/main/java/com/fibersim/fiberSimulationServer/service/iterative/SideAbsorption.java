@@ -1,6 +1,9 @@
 package com.fibersim.fiberSimulationServer.service.iterative;
 
 import com.fibersim.fiberSimulationServer.service.basics.Misc;
+import com.fibersim.fiberSimulationServer.service.utils.UnitIntegral;
+import com.fibersim.fiberSimulationServer.service.utils.UnitIntegrand;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SideAbsorption {
     private int k;
@@ -11,6 +14,9 @@ public class SideAbsorption {
     private final double[] alphaDopant;
     private final double[] nClad;
     private final double[] alphaClad;
+
+    @Autowired
+    private UnitIntegral unitIntegral;
 
     public SideAbsorption(double diameter, double q, double[] nCore, double[] alphaCore, double[] alphaDopant, double[] nClad, double[] alphaClad) {
         this.diameter = diameter;
@@ -25,9 +31,9 @@ public class SideAbsorption {
 
     public double[] noReflections() {
         double[] result = new double[nCore.length];
-        UnitIntegral integrator = new UnitIntegral() {
+        UnitIntegrand integrand = new UnitIntegrand() {
             @Override
-            public double integrand(double u) {
+            public double evaluate(double u) {
                 if(alphaCore[k] == 0) return 0;
 
                 double d = diameter*Math.sqrt(1-Math.pow(u/nCore[k],2));
@@ -39,7 +45,7 @@ public class SideAbsorption {
         };
 
         for(k = 0 ; k < nCore.length ; k++) {
-            result[k] = integrator.integrate();
+            result[k] = unitIntegral.integrate(integrand);
         }
 
         return result;
@@ -47,9 +53,9 @@ public class SideAbsorption {
 
     public double[] reflections() {
         double[] result = new double[nCore.length];
-        UnitIntegral integrator = new UnitIntegral() {
+        UnitIntegrand integrand = new UnitIntegrand() {
             @Override
-            public double integrand(double u) {
+            public double evaluate(double u) {
                 if(alphaCore[k] == 0) return 0;
 
                 double d = diameter*Math.sqrt(1-Math.pow(u/nCore[k],2));
@@ -66,7 +72,7 @@ public class SideAbsorption {
         };
 
         for(k = 0 ; k < nCore.length ; k++) {
-            result[k] = integrator.integrate();
+            result[k] = unitIntegral.integrate(integrand);
         }
 
         return result;
@@ -74,9 +80,9 @@ public class SideAbsorption {
 
     public double[] twoInterphases() {
         double[] result = new double[nCore.length];
-        UnitIntegral integrator = new UnitIntegral() {
+        UnitIntegrand integrand = new UnitIntegrand() {
             @Override
-            public double integrand(double u) {
+            public double evaluate(double u) {
                 if(alphaCore[k] == 0) return 0;
 
                 double dCore = diameter*Math.sqrt(q*q-Math.pow(u/nCore[k],2));
@@ -103,7 +109,7 @@ public class SideAbsorption {
 
         for(k = 0 ; k < nCore.length ; k++) {
             double uCut = Math.min(1.0, q*nClad[k]);
-            result[k] = integrator.integrate(uCut);
+            result[k] = unitIntegral.integrate(integrand);
         }
 
         return result;
