@@ -1,7 +1,7 @@
 package com.fibersim.fiberSimulationServer.service.components;
 
-import com.fibersim.fiberSimulationServer.service.basics.Misc;
 import com.fibersim.fiberSimulationServer.service.basics.Ray;
+import com.fibersim.fiberSimulationServer.service.utils.MathUtils;
 import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 import com.fibersim.fiberSimulationServer.service.constraints.Constraint;
 import com.fibersim.fiberSimulationServer.service.interphases.Interphase;
@@ -53,7 +53,7 @@ public class Refractor implements Component {
             } else {
                 double newCosTheta = Math.copySign(Math.sqrt(1-(1-cosTheta*cosTheta)*(N1*N1)/(N2*N2)), cosTheta);
 
-                double fresnelR = Misc.fresnelR(cosTheta, newCosTheta, N1, N2);
+                double fresnelR = MathUtils.fresnelR(cosTheta, newCosTheta, N1, N2);
 
                 if(Math.random() < fresnelR) {
                     ray.vel = reflectedVel;

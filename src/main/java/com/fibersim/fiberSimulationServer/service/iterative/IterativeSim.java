@@ -1,10 +1,10 @@
 package com.fibersim.fiberSimulationServer.service.iterative;
 
-import com.fibersim.fiberSimulationServer.service.basics.Misc;
 import com.fibersim.fiberSimulationServer.service.resources.DyeDopant;
 import com.fibersim.fiberSimulationServer.service.resources.LambdaRange;
 import com.fibersim.fiberSimulationServer.service.resources.Medium;
 import com.fibersim.fiberSimulationServer.service.resources.PowerSource;
+import com.fibersim.fiberSimulationServer.service.utils.Constants;
 
 public class IterativeSim {
     public static double[] dyeIterative(String dopantName, double N, double diameter, double q, double L) {
@@ -56,7 +56,7 @@ public class IterativeSim {
         double[] PNconst1 = new double[numLL];
         double[] PNconst2 = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
-            double concentrationToPower = Math.PI*Misc.h*Misc.c*diameter*diameter/(4*ll[k]);
+            double concentrationToPower = Math.PI* Constants.h*Constants.c*diameter*diameter/(4*ll[k]);
 
             Nsolconst += diameter*Isol[k]*sideEfficiency[k]*dlambda/concentrationToPower;
             Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
