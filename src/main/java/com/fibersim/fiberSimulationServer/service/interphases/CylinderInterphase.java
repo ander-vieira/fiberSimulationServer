@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.service.interphases;
 
-import com.fibersim.fiberSimulationServer.service.basics.Vector3;
+import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 
 public class CylinderInterphase implements Interphase {
     public double R2;

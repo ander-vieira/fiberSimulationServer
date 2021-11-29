@@ -2,7 +2,7 @@ package com.fibersim.fiberSimulationServer.service.components;
 
 import com.fibersim.fiberSimulationServer.service.basics.Misc;
 import com.fibersim.fiberSimulationServer.service.basics.Ray;
-import com.fibersim.fiberSimulationServer.service.basics.Vector3;
+import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 import com.fibersim.fiberSimulationServer.service.constraints.Constraint;
 import com.fibersim.fiberSimulationServer.service.interphases.Interphase;
 import com.fibersim.fiberSimulationServer.service.resources.Medium;

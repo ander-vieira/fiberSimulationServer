@@ -1,5 +1,7 @@
 package com.fibersim.fiberSimulationServer.service.basics;
 
+import com.fibersim.fiberSimulationServer.service.utils.Vector3;
+
 public class Ray {
     public Vector3 pos;
     public Vector3 vel;
@@ -16,9 +18,9 @@ public class Ray {
     }
 
     public void move(double ds) {
-        pos.x += vel.x*ds;
-        pos.y += vel.y*ds;
-        pos.z += vel.z*ds;
+        pos.setX(pos.getX()+vel.getX()*ds);
+        pos.setX(pos.getY()+vel.getY()*ds);
+        pos.setX(pos.getZ()+vel.getZ()*ds);
     }
 
     public boolean alive() {

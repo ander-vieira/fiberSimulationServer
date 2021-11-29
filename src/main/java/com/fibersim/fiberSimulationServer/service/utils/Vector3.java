@@ -1,9 +1,14 @@
-package com.fibersim.fiberSimulationServer.service.basics;
+package com.fibersim.fiberSimulationServer.service.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Vector3 {
-    public double x;
-    public double y;
-    public double z;
+    private double x;
+    private double y;
+    private double z;
 
     public static final Vector3 O = new Vector3(0, 0, 0);
     public static final Vector3 X = new Vector3(1, 0, 0);

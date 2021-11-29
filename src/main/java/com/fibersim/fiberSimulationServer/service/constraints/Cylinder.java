@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.service.constraints;
 
-import com.fibersim.fiberSimulationServer.service.basics.Vector3;
+import com.fibersim.fiberSimulationServer.service.utils.Vector3;
 
 public class Cylinder implements Constraint {
     private final double R2;
@@ -20,6 +20,6 @@ public class Cylinder implements Constraint {
     public boolean check(Vector3 pos, Vector3 vel) {
         Vector3 posR = pos.minus(origin);
 
-        return posR.x*posR.x+posR.y*posR.y < R2;
+        return posR.getX()*posR.getX()+posR.getY()*posR.getY() < R2;
     }
 }
