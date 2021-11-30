@@ -1,11 +1,11 @@
-package com.fibersim.fiberSimulationServer.core.constraints;
+package com.fibersim.fiberSimulationServer.core.check;
 
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class ZInterval implements Constraint {
+public class ZIntervalCheck implements Check {
     private final double Zmin, Zmax;
 
-    public ZInterval(double Zmin, double Zmax) {
+    public ZIntervalCheck(double Zmin, double Zmax) {
         this.Zmin = Zmin;
         this.Zmax = Zmax;
     }

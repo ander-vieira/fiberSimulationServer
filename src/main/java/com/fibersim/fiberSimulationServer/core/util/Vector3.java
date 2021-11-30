@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.core.util;
 
 public class Vector3 {
     public double x;

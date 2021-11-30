@@ -1,19 +1,19 @@
-package com.fibersim.fiberSimulationServer.core.components;
+package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
-import com.fibersim.fiberSimulationServer.core.constraints.Constraint;
-import com.fibersim.fiberSimulationServer.core.interphases.Interphase;
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.check.Check;
+import com.fibersim.fiberSimulationServer.core.phase.Phase;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class Mirror implements Component {
-    private final Interphase interphase;
-    Constraint constraint = Constraint.alwaysTrue;
+public class MirrorElement implements Element {
+    private final Phase interphase;
+    Check constraint = Check.alwaysTrue;
 
-    public Mirror(Interphase interphase) {
+    public MirrorElement(Phase interphase) {
         this.interphase = interphase;
     }
 
-    public Mirror setConstraint(Constraint constraint) {
+    public MirrorElement setConstraint(Check constraint) {
         this.constraint = constraint;
 
         return this;

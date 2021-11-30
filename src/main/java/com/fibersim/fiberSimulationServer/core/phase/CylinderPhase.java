@@ -1,13 +1,13 @@
-package com.fibersim.fiberSimulationServer.core.interphases;
+package com.fibersim.fiberSimulationServer.core.phase;
 
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class CylinderInterphase implements Interphase {
+public class CylinderPhase implements Phase {
     public double R2;
     public Vector3 origin;
     public Vector3 direction;
 
-    public CylinderInterphase(double R, Vector3 origin, Vector3 direction) {
+    public CylinderPhase(double R, Vector3 origin, Vector3 direction) {
         this.R2 = R*R;
         this.origin = origin;
         this.direction = direction;

@@ -1,8 +1,8 @@
 package com.fibersim.fiberSimulationServer.core.iterative;
 
-import com.fibersim.fiberSimulationServer.core.utils.MathUtils;
-import com.fibersim.fiberSimulationServer.core.utils.UnitIntegral;
-import com.fibersim.fiberSimulationServer.core.utils.UnitIntegrand;
+import com.fibersim.fiberSimulationServer.core.util.MathUtils;
+import com.fibersim.fiberSimulationServer.core.util.UnitIntegral;
+import com.fibersim.fiberSimulationServer.core.util.UnitIntegrand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

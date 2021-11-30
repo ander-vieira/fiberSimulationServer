@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.core.util;
 
 public final class Constants {
     public static final double h = 6.63e-34;

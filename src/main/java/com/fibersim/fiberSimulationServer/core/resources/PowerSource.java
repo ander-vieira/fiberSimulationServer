@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.core.utils.FunctionLL;
+import com.fibersim.fiberSimulationServer.core.util.FunctionLL;
 import com.fibersim.fiberSimulationServer.resources.CSVInterpolator;
 
 public class PowerSource {

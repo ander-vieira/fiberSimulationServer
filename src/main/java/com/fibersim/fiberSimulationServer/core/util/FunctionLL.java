@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.core.util;
 
 public abstract class FunctionLL {
     public abstract double eval(double lambda);

@@ -1,12 +1,12 @@
-package com.fibersim.fiberSimulationServer.core.interphases;
+package com.fibersim.fiberSimulationServer.core.phase;
 
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class PlaneInterphase implements Interphase {
+public class PlanePhase implements Phase {
     Vector3 normalVector;
     Vector3 origin;
 
-    public PlaneInterphase(Vector3 normalVector, Vector3 origin) {
+    public PlanePhase(Vector3 normalVector, Vector3 origin) {
         this.normalVector = normalVector;
         this.origin = origin;
     }

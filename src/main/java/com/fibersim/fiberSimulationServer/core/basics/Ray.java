@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.basics;
 
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
 public class Ray {
     public Vector3 pos;

@@ -1,20 +1,20 @@
-package com.fibersim.fiberSimulationServer.core.components;
+package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
-import com.fibersim.fiberSimulationServer.core.constraints.Constraint;
+import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.resources.DyeDopant;
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class DyeComponent implements Component {
+public class DyeDopantElement implements Element {
     private final double N;
     private final double quantumYield;
     private final double[] ll;
     private final double[] sigmaabs;
     private final double[] sigmaemi;
     private final double sumEmi;
-    Constraint constraint = Constraint.alwaysTrue;
+    Check constraint = Check.alwaysTrue;
 
-    public DyeComponent(DyeDopant dopant, double N, double[] ll) {
+    public DyeDopantElement(DyeDopant dopant, double N, double[] ll) {
         this.N = N;
         this.quantumYield = dopant.tauNR/(dopant.tauRad+dopant.tauNR);
         this.ll = ll;

@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.core.utils.FunctionLL;
+import com.fibersim.fiberSimulationServer.core.util.FunctionLL;
 
 public class DyeDopant {
     public double tauRad;

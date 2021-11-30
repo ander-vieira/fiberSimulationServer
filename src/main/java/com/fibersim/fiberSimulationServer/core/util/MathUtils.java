@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.core.util;
 
 public class MathUtils {
     public static double fresnelR(double cos1, double cos2, double N1, double N2) {

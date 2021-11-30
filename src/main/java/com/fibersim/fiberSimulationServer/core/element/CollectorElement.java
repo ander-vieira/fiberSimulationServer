@@ -1,21 +1,21 @@
-package com.fibersim.fiberSimulationServer.core.components;
+package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
-import com.fibersim.fiberSimulationServer.core.constraints.Constraint;
-import com.fibersim.fiberSimulationServer.core.interphases.Interphase;
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.check.Check;
+import com.fibersim.fiberSimulationServer.core.phase.Phase;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class Collector implements Component {
-    private final Interphase interphase;
-    Constraint constraint = Constraint.alwaysTrue;
+public class CollectorElement implements Element {
+    private final Phase interphase;
+    Check constraint = Check.alwaysTrue;
     private final double[] finalPower;
 
-    public Collector(Interphase interphase, double[] ll) {
+    public CollectorElement(Phase interphase, double[] ll) {
         this.interphase = interphase;
         this.finalPower = new double[ll.length];
     }
 
-    public Collector setConstraint(Constraint constraint) {
+    public CollectorElement setConstraint(Check constraint) {
         this.constraint = constraint;
 
         return this;

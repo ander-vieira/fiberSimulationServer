@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.resources;
 
-import com.fibersim.fiberSimulationServer.core.utils.FunctionLL;
+import com.fibersim.fiberSimulationServer.core.util.FunctionLL;
 import com.fibersim.fiberSimulationServer.resources.dto.CSVInterpolatorParamsDTO;
 import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;

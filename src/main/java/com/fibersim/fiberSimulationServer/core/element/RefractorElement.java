@@ -1,25 +1,25 @@
-package com.fibersim.fiberSimulationServer.core.components;
+package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
-import com.fibersim.fiberSimulationServer.core.constraints.Constraint;
-import com.fibersim.fiberSimulationServer.core.interphases.Interphase;
+import com.fibersim.fiberSimulationServer.core.check.Check;
+import com.fibersim.fiberSimulationServer.core.phase.Phase;
 import com.fibersim.fiberSimulationServer.core.resources.Medium;
-import com.fibersim.fiberSimulationServer.core.utils.MathUtils;
-import com.fibersim.fiberSimulationServer.core.utils.Vector3;
+import com.fibersim.fiberSimulationServer.core.util.MathUtils;
+import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
-public class Refractor implements Component {
-    private final Interphase interphase;
+public class RefractorElement implements Element {
+    private final Phase interphase;
     private final double[] Nplus;
     private final double[] Nminus;
-    Constraint constraint = Constraint.alwaysTrue;
+    Check constraint = Check.alwaysTrue;
 
-    public Refractor(Interphase interphase, Medium outMedium, Medium inMedium, double[] ll) {
+    public RefractorElement(Phase interphase, Medium outMedium, Medium inMedium, double[] ll) {
         this.interphase = interphase;
         this.Nplus = outMedium.refractionIndex.getArray(ll);
         this.Nminus = inMedium.refractionIndex.getArray(ll);
     }
 
-    public Refractor setConstraint(Constraint constraint) {
+    public RefractorElement setConstraint(Check constraint) {
         this.constraint = constraint;
 
         return this;

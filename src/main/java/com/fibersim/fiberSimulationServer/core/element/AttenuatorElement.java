@@ -1,18 +1,18 @@
-package com.fibersim.fiberSimulationServer.core.components;
+package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
-import com.fibersim.fiberSimulationServer.core.constraints.Constraint;
+import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.resources.Medium;
 
-public class Attenuator implements Component {
+public class AttenuatorElement implements Element {
     double[] alpha;
-    Constraint constraint = Constraint.alwaysTrue;
+    Check constraint = Check.alwaysTrue;
 
-    public Attenuator(Medium medium, double[] ll) {
+    public AttenuatorElement(Medium medium, double[] ll) {
         this.alpha = medium.attenuation.getArray(ll);
     }
 
-    public Attenuator setConstraint(Constraint constraint) {
+    public AttenuatorElement setConstraint(Check constraint) {
         this.constraint = constraint;
 
         return this;
