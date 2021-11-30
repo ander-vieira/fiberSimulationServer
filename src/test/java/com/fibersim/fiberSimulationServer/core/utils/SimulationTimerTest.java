@@ -13,10 +13,11 @@ public class SimulationTimerTest {
     @Test
     void simulationTimerTest() {
         try {
+            double sleepTime = Math.random();
             simulationTimer.startTimer();
-            Thread.sleep(1000);
+            Thread.sleep((long)Math.ceil(sleepTime*1000));
 
-            Assertions.assertTrue(simulationTimer.getTime() >= 1);
+            Assertions.assertTrue(simulationTimer.getTime() >= sleepTime);
         } catch(InterruptedException e) {
             e.printStackTrace();
         }
