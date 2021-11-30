@@ -12,7 +12,7 @@ public class DyeDopantElement implements Element {
     private final double[] sigmaabs;
     private final double[] sigmaemi;
     private final double sumEmi;
-    Check constraint = Check.alwaysTrue;
+    Check check = Check.alwaysTrue;
 
     public DyeDopantElement(DyeDopant dopant, double N, double[] ll) {
         this.N = N;
@@ -29,7 +29,7 @@ public class DyeDopantElement implements Element {
     @Override
     public double intersectionPoint(Ray ray) {
         double alpha = sigmaabs[ray.k]*N;
-        if(this.constraint.check(ray.pos, ray.vel) && alpha > 0) {
+        if(this.check.check(ray.pos, ray.vel) && alpha > 0) {
             return -Math.log(Math.random())/alpha;
         } else {
             return Double.POSITIVE_INFINITY;
@@ -38,7 +38,7 @@ public class DyeDopantElement implements Element {
 
     @Override
     public void process(Ray ray, double ds) {
-        if(this.constraint.check(ray.pos, ray.vel)) {
+        if(this.check.check(ray.pos, ray.vel)) {
             if(Math.random() < quantumYield) {
                 double rand1 = 2 * Math.PI * Math.random();
                 double rand2 = 2 * Math.random() - 1;

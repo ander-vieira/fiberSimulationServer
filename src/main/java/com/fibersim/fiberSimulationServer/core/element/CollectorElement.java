@@ -7,7 +7,7 @@ import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
 public class CollectorElement implements Element {
     private final Phase interphase;
-    Check constraint = Check.alwaysTrue;
+    Check check = Check.alwaysTrue;
     private final double[] finalPower;
 
     public CollectorElement(Phase interphase, double[] ll) {
@@ -15,8 +15,8 @@ public class CollectorElement implements Element {
         this.finalPower = new double[ll.length];
     }
 
-    public CollectorElement setConstraint(Check constraint) {
-        this.constraint = constraint;
+    public CollectorElement setCheck(Check check) {
+        this.check = check;
 
         return this;
     }
@@ -28,7 +28,7 @@ public class CollectorElement implements Element {
 
     @Override
     public void process(Ray ray, double ds) {
-        if(this.constraint.check(ray.pos, ray.vel)) {
+        if(this.check.check(ray.pos, ray.vel)) {
             Vector3 normalVector = interphase.getNormalVector(ray.pos);
 
             if(ray.vel.dot(normalVector) > 0) {

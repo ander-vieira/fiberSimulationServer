@@ -11,7 +11,7 @@ public class RefractorElement implements Element {
     private final Phase interphase;
     private final double[] Nplus;
     private final double[] Nminus;
-    Check constraint = Check.alwaysTrue;
+    Check check = Check.alwaysTrue;
 
     public RefractorElement(Phase interphase, Medium outMedium, Medium inMedium, double[] ll) {
         this.interphase = interphase;
@@ -19,8 +19,8 @@ public class RefractorElement implements Element {
         this.Nminus = inMedium.refractionIndex.getArray(ll);
     }
 
-    public RefractorElement setConstraint(Check constraint) {
-        this.constraint = constraint;
+    public RefractorElement setCheck(Check check) {
+        this.check = check;
 
         return this;
     }
@@ -32,7 +32,7 @@ public class RefractorElement implements Element {
 
     @Override
     public void process(Ray ray, double ds) {
-        if(this.constraint.check(ray.pos, ray.vel)) {
+        if(this.check.check(ray.pos, ray.vel)) {
             Vector3 normalVector = interphase.getNormalVector(ray.pos);
 
             Vector3 reflectedVel = ray.vel.minus(ray.vel.projectNormal(normalVector).scale(2));

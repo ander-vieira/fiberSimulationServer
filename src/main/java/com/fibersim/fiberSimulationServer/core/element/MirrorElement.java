@@ -7,14 +7,14 @@ import com.fibersim.fiberSimulationServer.core.util.Vector3;
 
 public class MirrorElement implements Element {
     private final Phase interphase;
-    Check constraint = Check.alwaysTrue;
+    Check check = Check.alwaysTrue;
 
     public MirrorElement(Phase interphase) {
         this.interphase = interphase;
     }
 
-    public MirrorElement setConstraint(Check constraint) {
-        this.constraint = constraint;
+    public MirrorElement setCheck(Check check) {
+        this.check = check;
 
         return this;
     }
@@ -26,7 +26,7 @@ public class MirrorElement implements Element {
 
     @Override
     public void process(Ray ray, double ds) {
-        if(this.constraint.check(ray.pos, ray.vel)) {
+        if(this.check.check(ray.pos, ray.vel)) {
             Vector3 normalVector = interphase.getNormalVector(ray.pos);
 
             ray.vel = ray.vel.minus(ray.vel.projectNormal(normalVector).scale(2));

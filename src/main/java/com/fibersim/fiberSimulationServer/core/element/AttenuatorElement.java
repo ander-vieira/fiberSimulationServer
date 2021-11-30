@@ -6,21 +6,21 @@ import com.fibersim.fiberSimulationServer.core.resources.Medium;
 
 public class AttenuatorElement implements Element {
     double[] alpha;
-    Check constraint = Check.alwaysTrue;
+    Check check = Check.alwaysTrue;
 
     public AttenuatorElement(Medium medium, double[] ll) {
         this.alpha = medium.attenuation.getArray(ll);
     }
 
-    public AttenuatorElement setConstraint(Check constraint) {
-        this.constraint = constraint;
+    public AttenuatorElement setCheck(Check check) {
+        this.check = check;
 
         return this;
     }
 
     @Override
     public double intersectionPoint(Ray ray) {
-        if(this.constraint.check(ray.pos, ray.vel) && alpha[ray.k] > 0) {
+        if(this.check.check(ray.pos, ray.vel) && alpha[ray.k] > 0) {
             return -Math.log(Math.random())/alpha[ray.k];
         } else {
             return Double.POSITIVE_INFINITY;
@@ -29,7 +29,7 @@ public class AttenuatorElement implements Element {
 
     @Override
     public void process(Ray ray, double ds) {
-        if(this.constraint.check(ray.pos, ray.vel)) {
+        if(this.check.check(ray.pos, ray.vel)) {
             ray.kill();
         }
     }
