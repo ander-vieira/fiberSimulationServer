@@ -3,17 +3,85 @@
     "dopant": "Rh6G",
     "tauRad": 4.8e-9,
     "tauNR": 1.0,
+    "minLambda": 410e-9,
+    "maxLambda": 710e-9,
+    "sigmaabs": {
+      "filename": "/sigmaabs_Rh6G.csv",
+      "peakLL": 530.58e-9,
+      "peakValue": 4.3298e-20
+    },
+    "sigmaemi": {
+      "filename": "/sigmaemi_Rh6G.csv",
+      "peakLL": 544.02e-9,
+      "peakValue": 2.0375e-20
+    }
+  },
+  {
+    "dopant": "RhB",
+    "tauRad": 4.8e-9,
+    "tauNR": 1.0,
     "minLambda": 360e-9,
     "maxLambda": 760e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_Rh6G.csv",
+      "filename": "/sigmaabs_RhB.csv",
       "peakLL": 559.29e-9,
       "peakValue": 3.37e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_Rh6G.csv",
+      "filename": "/sigmaemi_RhB.csv",
       "peakLL": 571.08e-9,
       "peakValue": 2.4973e-20
+    }
+  },
+  {
+    "dopant": "LumR",
+    "tauRad": 6e-9,
+    "tauNR": 1.14e-7,
+    "minLambda": 360e-9,
+    "maxLambda": 750e-9,
+    "sigmaabs": {
+      "filename": "/sigmaabs_LumR.csv",
+      "peakLL": 573.37e-9,
+      "peakValue": 1.9862e-20
+    },
+    "sigmaemi": {
+      "filename": "/sigmaemi_LumR.csv",
+      "peakLL": 600.85e-9,
+      "peakValue": 2.1984e-20
+    }
+  },
+  {
+    "dopant": "LumO",
+    "tauRad": 6e-9,
+    "tauNR": 7.4e-8,
+    "minLambda": 320e-9,
+    "maxLambda": 740e-9,
+    "sigmaabs": {
+      "filename": "/sigmaabs_LumO.csv",
+      "peakLL": 527.00e-9,
+      "peakValue": 2.5290e-20
+    },
+    "sigmaemi": {
+      "filename": "/sigmaemi_LumO.csv",
+      "peakLL": 569.00e-9,
+      "peakValue": 2.1047e-20
+    }
+  },
+  {
+    "dopant": "LumY",
+    "tauRad": 6e-9,
+    "tauNR": 1.14e-7,
+    "minLambda": 360e-9,
+    "maxLambda": 650e-9,
+    "sigmaabs": {
+      "filename": "/sigmaabs_LumY.csv",
+      "peakLL": 477.00e-9,
+      "peakValue": 2.3849e-20
+    },
+    "sigmaemi": {
+      "filename": "/sigmaemi_LumY.csv",
+      "peakLL": 495.00e-9,
+      "peakValue": 1.0178e-20
     }
   }
 ]
