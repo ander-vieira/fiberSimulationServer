@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.service.resources;
+package com.fibersim.fiberSimulationServer.service.utils;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -8,17 +8,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class SplineCSV extends FunctionLL {
+    private static final String CSV_PREFIX = "/csv";
+
+    private static final boolean USE_FILTER = true;
+    private static final double[] FILTER_LAMBDAS = {-3, -2, -1, 0, 1, 2, 3};
+    private static final double[] FILTER_WEIGHTS = {0.076517, 0.133363, 0.186122, 0.207996, 0.186122, 0.133363, 0.076517};
+
     private final int numValues;
     private final double[] rawLambdas;
     private final double[] rawValues;
     private final double[] b;
     private final double[] c;
     private final double[] d;
-    private double scale;
-
-    private static final boolean filter = true;
-    private final double[] filterLambdas = {-3, -2, -1, 0, 1, 2, 3};
-    private final double[] filterWeights = {0.076517, 0.133363, 0.186122, 0.207996, 0.186122, 0.133363, 0.076517};
+    private final double scale;
 
     public SplineCSV(String filename, double peakLL, double peakValue) {
         this(filename, peakLL, peakValue, 0, 1);
@@ -27,7 +29,7 @@ public class SplineCSV extends FunctionLL {
     public SplineCSV(String filename, double peakLL, double peakValue, int llCol, int valueCol) {
         int numValues = 0;
 
-        Resource resource = new ClassPathResource(filename);
+        Resource resource = new ClassPathResource(CSV_PREFIX+filename);
 
         try(BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             while(csvReader.readLine() != null) numValues++;
@@ -58,12 +60,15 @@ public class SplineCSV extends FunctionLL {
 
         getSplineParams();
 
-        this.scale = 1;
-        this.scale = peakValue/this.eval(peakLL);
+        this.scale = peakValue/this.eval(peakLL, 1);
     }
 
     @Override
     public double eval(double lambda) {
+        return this.eval(lambda, this.scale);
+    }
+
+    private double eval(double lambda, double scale) {
         int i;
 
         lambda *= 1e9;
@@ -76,10 +81,10 @@ public class SplineCSV extends FunctionLL {
             return 0;
         } else {
             double result = 0;
-            if (filter) {
-                for (int j = 0; j < filterLambdas.length; j++) {
-                    double lambdaNode = lambda + filterLambdas[j];
-                    result += (rawValues[i - 1] + b[i - 1] * (lambdaNode - rawLambdas[i - 1]) + c[i - 1] * Math.pow(lambdaNode - rawLambdas[i - 1], 2) + d[i - 1] * Math.pow(lambdaNode - rawLambdas[i - 1], 3)) * scale * filterWeights[j];
+            if (USE_FILTER) {
+                for (int j = 0; j < FILTER_LAMBDAS.length; j++) {
+                    double lambdaNode = lambda + FILTER_LAMBDAS[j];
+                    result += (rawValues[i - 1] + b[i - 1] * (lambdaNode - rawLambdas[i - 1]) + c[i - 1] * Math.pow(lambdaNode - rawLambdas[i - 1], 2) + d[i - 1] * Math.pow(lambdaNode - rawLambdas[i - 1], 3)) * scale * FILTER_WEIGHTS[j];
                 }
             } else {
                 result = (rawValues[i - 1] + b[i - 1] * (lambda - rawLambdas[i - 1]) + c[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 2) + d[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 3)) * scale;
