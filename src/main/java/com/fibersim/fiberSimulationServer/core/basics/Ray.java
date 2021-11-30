@@ -18,9 +18,9 @@ public class Ray {
     }
 
     public void move(double ds) {
-        pos.setX(pos.getX()+vel.getX()*ds);
-        pos.setX(pos.getY()+vel.getY()*ds);
-        pos.setX(pos.getZ()+vel.getZ()*ds);
+        pos.x += vel.x*ds;
+        pos.y += vel.y*ds;
+        pos.z += vel.z*ds;
     }
 
     public boolean alive() {

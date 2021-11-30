@@ -1,14 +1,9 @@
 package com.fibersim.fiberSimulationServer.core.utils;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Vector3 {
-    private double x;
-    private double y;
-    private double z;
+    public double x;
+    public double y;
+    public double z;
 
     public static final Vector3 O = new Vector3(0, 0, 0);
     public static final Vector3 X = new Vector3(1, 0, 0);
@@ -52,11 +47,11 @@ public class Vector3 {
     }
 
     public Vector3 plus(Vector3 vec2) {
-        return new Vector3(x+vec2.x, y+vec2.y, z+vec2.x);
+        return new Vector3(x+vec2.x, y+vec2.y, z+vec2.z);
     }
 
     public Vector3 minus(Vector3 vec2) {
-        return new Vector3(x-vec2.x, y-vec2.y, z-vec2.x);
+        return new Vector3(x-vec2.x, y-vec2.y, z-vec2.z);
     }
 
     public Vector3 scale(double a) {

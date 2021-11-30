@@ -12,6 +12,6 @@ public class ZInterval implements Constraint {
 
     @Override
     public boolean check(Vector3 pos, Vector3 vel) {
-        return (pos.getZ() >= Zmin && pos.getZ() <= Zmax);
+        return (pos.z >= Zmin && pos.z <= Zmax);
     }
 }

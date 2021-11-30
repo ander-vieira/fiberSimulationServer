@@ -1,5 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.utils;
 
+import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -10,17 +11,22 @@ import java.io.InputStreamReader;
 public class SplineCSV extends FunctionLL {
     private static final String CSV_PREFIX = "/csv";
 
-    private static final boolean USE_FILTER = true;
+    private static final boolean USE_FILTER = false;
     private static final double[] FILTER_LAMBDAS = {-3, -2, -1, 0, 1, 2, 3};
     private static final double[] FILTER_WEIGHTS = {0.076517, 0.133363, 0.186122, 0.207996, 0.186122, 0.133363, 0.076517};
 
+    @Getter
     private final int numValues;
+    @Getter
     private final double[] rawLambdas;
+    @Getter
     private final double[] rawValues;
+    @Getter
+    private final double scale;
+
     private final double[] b;
     private final double[] c;
     private final double[] d;
-    private final double scale;
 
     public SplineCSV(String filename, double peakLL, double peakValue) {
         this(filename, peakLL, peakValue, 0, 1);
@@ -91,7 +97,8 @@ public class SplineCSV extends FunctionLL {
             } else {
                 double result;
 
-                result = (rawValues[i - 1] + b[i - 1] * (lambda - rawLambdas[i - 1]) + c[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 2) + d[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 3)) * scale;
+                result = (rawValues[i-1] + (rawValues[i]-rawValues[i-1])*(lambda-rawLambdas[i-1])/(rawLambdas[i]-rawLambdas[i-1]))*scale;
+                //result = (rawValues[i - 1] + b[i - 1] * (lambda - rawLambdas[i - 1]) + c[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 2) + d[i - 1] * Math.pow(lambda - rawLambdas[i - 1], 3)) * scale;
 
                 if(result < 0) result = 0;
 
