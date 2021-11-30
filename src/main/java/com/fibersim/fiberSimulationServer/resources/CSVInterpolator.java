@@ -1,5 +1,7 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.resources;
 
+import com.fibersim.fiberSimulationServer.core.utils.FunctionLL;
+import com.fibersim.fiberSimulationServer.resources.dto.CSVInterpolatorParamsDTO;
 import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -8,7 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class SplineCSV extends FunctionLL {
+public class CSVInterpolator extends FunctionLL {
     private static final String CSV_PREFIX = "/csv";
 
     private static final boolean USE_FILTER = false;
@@ -23,19 +25,32 @@ public class SplineCSV extends FunctionLL {
     private final double[] rawValues;
     @Getter
     private final double scale;
+    @Getter
+    private final boolean useFilter;
 
     private final double[] b;
     private final double[] c;
     private final double[] d;
 
-    public SplineCSV(String filename, double peakLL, double peakValue) {
+    public CSVInterpolator(String filename, double peakLL, double peakValue) {
         this(filename, peakLL, peakValue, 0, 1);
     }
 
-    public SplineCSV(String filename, double peakLL, double peakValue, int llCol, int valueCol) {
+    public CSVInterpolator(String filename, double peakLL, double peakValue, int llCol, int valueCol) {
+        this(CSVInterpolatorParamsDTO.builder()
+                .filename(filename)
+                .peakLL(peakLL)
+                .peakValue(peakValue)
+                .llColumn(llCol)
+                .valueColumn(valueCol)
+                .useFilter(USE_FILTER)
+                .build());
+    }
+
+    public CSVInterpolator(CSVInterpolatorParamsDTO params) {
         int numValues = 0;
 
-        Resource resource = new ClassPathResource(CSV_PREFIX+filename);
+        Resource resource = new ClassPathResource(CSV_PREFIX+params.getFilename());
 
         try(BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             while(csvReader.readLine() != null) numValues++;
@@ -50,14 +65,16 @@ public class SplineCSV extends FunctionLL {
         c = new double[numValues];
         d = new double[numValues-1];
 
+        this.useFilter = params.isUseFilter();
+
         try(BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             for(int i = 0 ; i < numValues ; i++) {
                 String line = csvReader.readLine();
                 if(line != null) {
                     String[] elems = line.split(",");
 
-                    rawLambdas[i] = Double.parseDouble(elems[llCol]);
-                    rawValues[i] = Double.parseDouble(elems[valueCol]);
+                    rawLambdas[i] = Double.parseDouble(elems[params.getLlColumn()]);
+                    rawValues[i] = Double.parseDouble(elems[params.getValueColumn()]);
                 }
             }
         } catch(IOException e) {
@@ -66,12 +83,12 @@ public class SplineCSV extends FunctionLL {
 
         getSplineParams();
 
-        this.scale = peakValue/this.eval(peakLL, 1, USE_FILTER);
+        this.scale = params.getPeakValue()/this.eval(params.getPeakLL(), 1, this.useFilter);
     }
 
     @Override
     public double eval(double lambda) {
-        return this.eval(lambda, this.scale, USE_FILTER);
+        return this.eval(lambda, this.scale, this.useFilter);
     }
 
     private double eval(double lambda, double scale, boolean useFilter) {

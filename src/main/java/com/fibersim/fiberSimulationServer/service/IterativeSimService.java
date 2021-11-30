@@ -2,14 +2,15 @@ package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
-import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
-import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import com.fibersim.fiberSimulationServer.core.resources.DyeDopant;
 import com.fibersim.fiberSimulationServer.core.resources.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.resources.Medium;
 import com.fibersim.fiberSimulationServer.core.resources.PowerSource;
+import com.fibersim.fiberSimulationServer.core.resources.factory.DyeDopantFactory;
 import com.fibersim.fiberSimulationServer.core.utils.Constants;
 import com.fibersim.fiberSimulationServer.core.utils.SimulationTimer;
+import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
+import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +20,12 @@ import java.util.Arrays;
 public class IterativeSimService {
     @Autowired
     SideAbsorption sideAbsorption;
-
     @Autowired
     GeometricalParams geometricalParams;
-
     @Autowired
     SimulationTimer simulationTimer;
+    @Autowired
+    DyeDopantFactory dyeDopantFactory;
 
     public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
         simulationTimer.startTimer();
@@ -32,7 +33,7 @@ public class IterativeSimService {
         double dz = 5e-5;
         int numZZ = (int)Math.ceil(params.getLength()/dz);
 
-        DyeDopant dopant = new DyeDopant("Rh6G");
+        DyeDopant dopant = dyeDopantFactory.make("Rh6G");
 
         int numLL = 151;
         LambdaRange lambdaRange = new LambdaRange();

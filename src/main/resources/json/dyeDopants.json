@@ -1,0 +1,19 @@
+[
+  {
+    "dopant": "Rh6G",
+    "tauRad": 4.8e-9,
+    "tauNR": 1.0,
+    "minLambda": 360e-9,
+    "maxLambda": 760e-9,
+    "sigmaabs": {
+      "filename": "/sigmaabs_Rh6G.csv",
+      "peakLL": 559.29e-9,
+      "peakValue": 3.37e-20
+    },
+    "sigmaemi": {
+      "filename": "/sigmaemi_Rh6G.csv",
+      "peakLL": 571.08e-9,
+      "peakValue": 2.4973e-20
+    }
+  }
+]

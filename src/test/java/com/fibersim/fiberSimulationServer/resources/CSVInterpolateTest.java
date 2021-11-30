@@ -1,12 +1,12 @@
-package com.fibersim.fiberSimulationServer.core.utils;
+package com.fibersim.fiberSimulationServer.resources;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class SplineCSVTest {
+public class CSVInterpolateTest {
     @Test
-    void splineCSVTest() {
-        SplineCSV splineCSV = new SplineCSV("/sigmaabs_RhB.csv", 559.29e-9, 3.37e-20);
+    void csvInterpolateTest() {
+        CSVInterpolator splineCSV = new CSVInterpolator("/sigmaabs_RhB.csv", 559.29e-9, 3.37e-20);
 
         double[] rawLambdas = splineCSV.getRawLambdas();
         double[] rawValues = splineCSV.getRawValues();

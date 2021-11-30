@@ -1,6 +1,5 @@
 package com.fibersim.fiberSimulationServer.service;
 
-import com.fibersim.fiberSimulationServer.core.utils.SplineCSV;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import org.junit.jupiter.api.Assertions;
