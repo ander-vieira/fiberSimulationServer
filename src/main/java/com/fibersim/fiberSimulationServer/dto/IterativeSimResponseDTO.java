@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class IterativeSimResponseDTO {
+    private double elapsedTime;
     private double lightP;
 }

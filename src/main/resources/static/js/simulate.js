@@ -1,5 +1,6 @@
 function printResults(result) {
     document.getElementById("simResult").innerText = result.lightP*1e6+" μW";
+    document.getElementById("simTime").innerText = result.elapsedTime+" s";
 }
 
 document.addEventListener("DOMContentLoaded", function(){

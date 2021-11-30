@@ -1,26 +1,36 @@
 package com.fibersim.fiberSimulationServer.service.iterative;
 
+import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
+import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import com.fibersim.fiberSimulationServer.service.resources.DyeDopant;
 import com.fibersim.fiberSimulationServer.service.resources.LambdaRange;
 import com.fibersim.fiberSimulationServer.service.resources.Medium;
 import com.fibersim.fiberSimulationServer.service.resources.PowerSource;
 import com.fibersim.fiberSimulationServer.service.utils.Constants;
+import com.fibersim.fiberSimulationServer.service.utils.SimulationTimer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class IterativeSim {
+import java.util.Arrays;
+
+@Service
+public class IterativeSimService {
     @Autowired
     SideAbsorption sideAbsorption;
 
     @Autowired
     GeometricalParams geometricalParams;
 
-    public double[] dyeIterative(String dopantName, double N, double diameter, double q, double L) {
-        double dz = 5e-5;
-        int numZZ = (int)Math.ceil(L/dz);
+    @Autowired
+    SimulationTimer simulationTimer;
 
-        DyeDopant dopant = new DyeDopant(dopantName);
+    public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
+        simulationTimer.startTimer();
+
+        double dz = 5e-5;
+        int numZZ = (int)Math.ceil(params.getLength()/dz);
+
+        DyeDopant dopant = new DyeDopant("Rh6G");
 
         int numLL = 151;
         LambdaRange lambdaRange = new LambdaRange();
@@ -50,11 +60,11 @@ public class IterativeSim {
         double[] alphaCore = new double[numLL];
         double[] alphaDopant = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
-            alphaDopant[k] = N*sigmaabs[k];
+            alphaDopant[k] = params.getConcentration()*sigmaabs[k];
             alphaCore[k] = alfaPMMA[k]+alphaDopant[k];
         }
 
-        double[] sideEfficiency = sideAbsorption.twoInterphases(diameter, q, nPMMA, alphaCore, alphaDopant, nClad, alfaClad);
+        double[] sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, nPMMA, alphaCore, alphaDopant, nClad, alfaClad);
 
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];
@@ -63,12 +73,12 @@ public class IterativeSim {
         double[] PNconst1 = new double[numLL];
         double[] PNconst2 = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
-            double concentrationToPower = Math.PI* Constants.h*Constants.c*diameter*diameter/(4*ll[k]);
+            double concentrationToPower = Math.PI* Constants.h*Constants.c* params.getDiameter()* params.getDiameter()/(4*ll[k]);
 
-            Nsolconst += diameter*Isol[k]*sideEfficiency[k]*dlambda/concentrationToPower;
+            Nsolconst += params.getDiameter()*Isol[k]*sideEfficiency[k]*dlambda/concentrationToPower;
             Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz[k]*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz[k]*(alfaPMMA[k]+N*sigmaabs[k])*dz;
+            Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getConcentration()*sigmaabs[k])*dz;
             PNconst1[k] = concentrationToPower*beta[k]*sigmaemi[k]/sumEmi*dz/dopant.tauRad;
             PNconst2[k] = Kz[k]*(sigmaabs[k]+sigmaemi[k])*dz;
         }
@@ -97,7 +107,7 @@ public class IterativeSim {
                 }
 
                 double A = 1/dopant.tauRad+1/dopant.tauNR+wabs+west;
-                double b = Nsolconst+N*wabs;
+                double b = Nsolconst+ params.getConcentration()*wabs;
 
                 N2[j] = b/A;
             }
@@ -138,6 +148,9 @@ public class IterativeSim {
             }
         } while(error > 1e-8);
 
-        return P[numZZ-1];
+        return IterativeSimResponseDTO.builder()
+                .elapsedTime(simulationTimer.getTime())
+                .lightP(Arrays.stream(P[numZZ-1]).sum())
+                .build();
     }
 }
