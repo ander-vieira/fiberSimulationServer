@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.resources;
 
-import com.fibersim.fiberSimulationServer.core.util.FunctionLL;
+import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.resources.dto.CSVInterpolatorParamsDTO;
 import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
@@ -10,7 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class CSVInterpolator extends FunctionLL {
+public class CSVInterpolator extends LambdaFunction {
     private static final String CSV_PREFIX = "/csv";
 
     private static final boolean USE_FILTER = false;

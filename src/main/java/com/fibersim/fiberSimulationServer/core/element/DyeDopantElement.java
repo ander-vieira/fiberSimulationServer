@@ -2,8 +2,8 @@ package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
-import com.fibersim.fiberSimulationServer.core.resources.DyeDopant;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
+import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
 
 public class DyeDopantElement implements Element {
     private final double N;
@@ -14,12 +14,12 @@ public class DyeDopantElement implements Element {
     private final double sumEmi;
     Check check = Check.alwaysTrue;
 
-    public DyeDopantElement(DyeDopant dopant, double N, double[] ll) {
+    public DyeDopantElement(DyeDopantDTO dopant, double N, double[] ll) {
         this.N = N;
-        this.quantumYield = dopant.tauNR/(dopant.tauRad+dopant.tauNR);
+        this.quantumYield = dopant.getTauNR()/(dopant.getTauRad()+dopant.getTauNR());
         this.ll = ll;
-        this.sigmaabs = dopant.sigmaabs.getArray(ll);
-        this.sigmaemi = dopant.sigmaemi.getArray(ll);
+        this.sigmaabs = dopant.getSigmaabs().getArray(ll);
+        this.sigmaemi = dopant.getSigmaemi().getArray(ll);
 
         double sumEmi = 0;
         for(double sigma : sigmaemi) sumEmi += sigma;

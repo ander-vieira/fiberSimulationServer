@@ -1,6 +1,7 @@
 package com.fibersim.fiberSimulationServer.resources.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.resources.jackson.DyeDopantParamsDTODeserializer;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,12 +11,12 @@ import lombok.Setter;
 @Setter
 @Builder
 @JsonDeserialize(using = DyeDopantParamsDTODeserializer.class)
-public class DyeDopantParamsDTO {
+public class DyeDopantDTO {
     private String dopant;
     private double tauRad;
     private double tauNR;
     private double minLambda;
     private double maxLambda;
-    private CSVInterpolatorParamsDTO sigmaabs;
-    private CSVInterpolatorParamsDTO sigmaemi;
+    private LambdaFunction sigmaabs;
+    private LambdaFunction sigmaemi;
 }

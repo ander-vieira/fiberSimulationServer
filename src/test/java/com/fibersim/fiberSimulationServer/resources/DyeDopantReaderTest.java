@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.resources;
 
-import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantParamsDTO;
+import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,10 @@ public class DyeDopantReaderTest {
 
     @Test
     void jsonMapReaderTest() {
-        DyeDopantParamsDTO params = dyeDopantReader.readDopant("Rh6G");
+        DyeDopantDTO params = dyeDopantReader.readDopant("Rh6G");
 
         Assertions.assertNotNull(params);
-        Assertions.assertInstanceOf(DyeDopantParamsDTO.class, params);
+        Assertions.assertInstanceOf(DyeDopantDTO.class, params);
         Assertions.assertEquals("Rh6G", params.getDopant());
     }
 }

@@ -2,15 +2,15 @@ package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
-import com.fibersim.fiberSimulationServer.core.resources.DyeDopant;
 import com.fibersim.fiberSimulationServer.core.resources.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.resources.Medium;
 import com.fibersim.fiberSimulationServer.core.resources.PowerSource;
-import com.fibersim.fiberSimulationServer.core.resources.factory.DyeDopantFactory;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
+import com.fibersim.fiberSimulationServer.resources.DyeDopantReader;
+import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class IterativeSimService {
     @Autowired
     SimulationTimer simulationTimer;
     @Autowired
-    DyeDopantFactory dyeDopantFactory;
+    DyeDopantReader dyeDopantReader;
 
     public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
         simulationTimer.startTimer();
@@ -33,7 +33,7 @@ public class IterativeSimService {
         double dz = 5e-5;
         int numZZ = (int)Math.ceil(params.getLength()/dz);
 
-        DyeDopant dopant = dyeDopantFactory.make("Rh6G");
+        DyeDopantDTO dopant = dyeDopantReader.readDopant("Rh6G");
 
         int numLL = 151;
         LambdaRange lambdaRange = new LambdaRange();
@@ -41,8 +41,8 @@ public class IterativeSimService {
         double[] ll = lambdaRange.getLL(numLL);
         double dlambda = lambdaRange.getDlambda(numLL);
 
-        double[] sigmaabs = dopant.sigmaabs.getArray(ll);
-        double[] sigmaemi = dopant.sigmaemi.getArray(ll);
+        double[] sigmaabs = dopant.getSigmaabs().getArray(ll);
+        double[] sigmaemi = dopant.getSigmaemi().getArray(ll);
         double sumEmi = 0;
         for(double sigma: sigmaemi) sumEmi += sigma;
 
@@ -82,7 +82,7 @@ public class IterativeSimService {
             Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz[k]*sigmaemi[k]/concentrationToPower;
             Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getConcentration()*sigmaabs[k])*dz;
-            PNconst1[k] = concentrationToPower*beta[k]*sigmaemi[k]/sumEmi*dz/dopant.tauRad;
+            PNconst1[k] = concentrationToPower*beta[k]*sigmaemi[k]/sumEmi*dz/dopant.getTauRad();
             PNconst2[k] = Kz[k]*(sigmaabs[k]+sigmaemi[k])*dz;
         }
 
@@ -109,7 +109,7 @@ public class IterativeSimService {
                     west += Nestconst[k]*evalP;
                 }
 
-                double A = 1/dopant.tauRad+1/dopant.tauNR+wabs+west;
+                double A = 1/dopant.getTauRad()+1/dopant.getTauNR()+wabs+west;
                 double b = Nsolconst+ params.getConcentration()*wabs;
 
                 N2[j] = b/A;

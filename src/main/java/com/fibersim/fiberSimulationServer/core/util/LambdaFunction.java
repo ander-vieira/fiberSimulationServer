@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.util;
 
-public abstract class FunctionLL {
+public abstract class LambdaFunction {
     public abstract double eval(double lambda);
 
     public double[] getArray(double[] ll) {
@@ -13,8 +13,8 @@ public abstract class FunctionLL {
         return result;
     }
 
-    public static FunctionLL constant(double value) {
-        return new FunctionLL() {
+    public static LambdaFunction constant(double value) {
+        return new LambdaFunction() {
             @Override
             public double eval(double lambda) {
                 return value;

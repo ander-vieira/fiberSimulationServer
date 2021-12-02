@@ -1,12 +1,12 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.core.util.FunctionLL;
+import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.resources.CSVInterpolator;
 
 public class PowerSource {
     private static final String SOURCE_PREFIX = "";
 
-    public FunctionLL I;
+    public LambdaFunction I;
 
     public PowerSource(String source) {
         switch(source) {
