@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
+import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
 
 public class LambdaRange {
     public double minLambda;
@@ -15,7 +15,7 @@ public class LambdaRange {
         this.maxLambda = maxLambda;
     }
 
-    public void addDopant(DyeDopantDTO dopant) {
+    public void addDopant(DyeDopantResource dopant) {
         if(dopant.getMinLambda() < minLambda) minLambda = dopant.getMinLambda();
         if(dopant.getMaxLambda() > maxLambda) maxLambda = dopant.getMaxLambda();
     }

@@ -6,30 +6,29 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fibersim.fiberSimulationServer.resources.CSVInterpolator;
-import com.fibersim.fiberSimulationServer.resources.dto.CSVInterpolatorParamsDTO;
-import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
+import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
 
 @JsonComponent
-public class DyeDopantParamsDTODeserializer extends JsonDeserializer<DyeDopantDTO> {
+public class DyeDopantResourceDeserializer extends JsonDeserializer<DyeDopantResource> {
     @Override
-    public DyeDopantDTO deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public DyeDopantResource deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
 
-        CSVInterpolatorParamsDTO sigmaabsParams = treeNode.get("sigmaabs").traverse(jsonParser.getCodec()).readValueAs(CSVInterpolatorParamsDTO.class);
-        CSVInterpolatorParamsDTO sigmaemiParams = treeNode.get("sigmaemi").traverse(jsonParser.getCodec()).readValueAs(CSVInterpolatorParamsDTO.class);
+        LambdaFunctionResource sigmaabsParams = treeNode.get("sigmaabs").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
+        LambdaFunctionResource sigmaemiParams = treeNode.get("sigmaemi").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
 
-        return DyeDopantDTO.builder()
+        return DyeDopantResource.builder()
                 .dopant(((TextNode)treeNode.get("dopant")).asText())
                 .tauRad(((DoubleNode)treeNode.get("tauRad")).asDouble())
                 .tauNR(((DoubleNode)treeNode.get("tauNR")).asDouble())
                 .minLambda(((DoubleNode)treeNode.get("minLambda")).asDouble())
                 .maxLambda(((DoubleNode)treeNode.get("maxLambda")).asDouble())
-                .sigmaabs(new CSVInterpolator(sigmaabsParams))
-                .sigmaemi(new CSVInterpolator(sigmaemiParams))
+                .sigmaabs(sigmaabsParams)
+                .sigmaemi(sigmaemiParams)
                 .build();
     }
 }

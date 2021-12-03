@@ -1,7 +1,5 @@
 package com.fibersim.fiberSimulationServer.resources;
 
-import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
-import com.fibersim.fiberSimulationServer.resources.dto.CSVInterpolatorParamsDTO;
 import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -10,8 +8,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class CSVInterpolator extends LambdaFunction {
-    private static final String CSV_PREFIX = "/csv";
+public class CSVInterpolator {
+    private static final String CSV_PREFIX = "/csv/";
+    private static final String CSV_SUFFIX = ".csv";
 
     private static final boolean USE_FILTER = false;
     private static final double[] FILTER_LAMBDAS = {-3, -2, -1, 0, 1, 2, 3};
@@ -37,7 +36,7 @@ public class CSVInterpolator extends LambdaFunction {
     }
 
     public CSVInterpolator(String filename, double peakLL, double peakValue, int llCol, int valueCol) {
-        this(CSVInterpolatorParamsDTO.builder()
+        this(LambdaCsvResource.builder()
                 .filename(filename)
                 .peakLL(peakLL)
                 .peakValue(peakValue)
@@ -47,10 +46,10 @@ public class CSVInterpolator extends LambdaFunction {
                 .build());
     }
 
-    public CSVInterpolator(CSVInterpolatorParamsDTO params) {
+    public CSVInterpolator(LambdaCsvResource params) {
         int numValues = 0;
 
-        Resource resource = new ClassPathResource(CSV_PREFIX+params.getFilename());
+        Resource resource = new ClassPathResource(CSV_PREFIX+params.getFilename()+CSV_SUFFIX);
 
         try(BufferedReader csvReader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             while(csvReader.readLine() != null) numValues++;
@@ -86,7 +85,6 @@ public class CSVInterpolator extends LambdaFunction {
         this.scale = params.getPeakValue()/this.eval(params.getPeakLL(), 1, this.useFilter);
     }
 
-    @Override
     public double eval(double lambda) {
         return this.eval(lambda, this.scale, this.useFilter);
     }

@@ -6,12 +6,14 @@
     "minLambda": 410e-9,
     "maxLambda": 710e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_Rh6G.csv",
+      "type": "csv",
+      "filename": "sigmaabs_Rh6G",
       "peakLL": 530.58e-9,
       "peakValue": 4.3298e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_Rh6G.csv",
+      "type": "csv",
+      "filename": "sigmaemi_Rh6G",
       "peakLL": 544.02e-9,
       "peakValue": 2.0375e-20
     }
@@ -23,12 +25,14 @@
     "minLambda": 360e-9,
     "maxLambda": 760e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_RhB.csv",
+      "type": "csv",
+      "filename": "sigmaabs_RhB",
       "peakLL": 559.29e-9,
       "peakValue": 3.37e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_RhB.csv",
+      "type": "csv",
+      "filename": "sigmaemi_RhB",
       "peakLL": 571.08e-9,
       "peakValue": 2.4973e-20
     }
@@ -40,12 +44,14 @@
     "minLambda": 360e-9,
     "maxLambda": 750e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_LumR.csv",
+      "type": "csv",
+      "filename": "sigmaabs_LumR",
       "peakLL": 573.37e-9,
       "peakValue": 1.9862e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_LumR.csv",
+      "type": "csv",
+      "filename": "sigmaemi_LumR",
       "peakLL": 600.85e-9,
       "peakValue": 2.1984e-20
     }
@@ -57,12 +63,14 @@
     "minLambda": 320e-9,
     "maxLambda": 740e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_LumO.csv",
+      "type": "csv",
+      "filename": "sigmaabs_LumO",
       "peakLL": 527.00e-9,
       "peakValue": 2.5290e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_LumO.csv",
+      "type": "csv",
+      "filename": "sigmaemi_LumO",
       "peakLL": 569.00e-9,
       "peakValue": 2.1047e-20
     }
@@ -74,12 +82,14 @@
     "minLambda": 360e-9,
     "maxLambda": 650e-9,
     "sigmaabs": {
-      "filename": "/sigmaabs_LumY.csv",
+      "type": "csv",
+      "filename": "sigmaabs_LumY",
       "peakLL": 477.00e-9,
       "peakValue": 2.3849e-20
     },
     "sigmaemi": {
-      "filename": "/sigmaemi_LumY.csv",
+      "type": "csv",
+      "filename": "sigmaemi_LumY",
       "peakLL": 495.00e-9,
       "peakValue": 1.0178e-20
     }

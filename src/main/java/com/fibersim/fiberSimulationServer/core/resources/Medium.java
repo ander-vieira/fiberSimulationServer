@@ -1,29 +1,48 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
-import com.fibersim.fiberSimulationServer.resources.CSVInterpolator;
+import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
+import com.fibersim.fiberSimulationServer.resources.LambdaConstantResource;
+import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
 
 public class Medium {
     private static final String MEDIUM_PREFIX = "";
 
-    public LambdaFunction refractionIndex;
-    public LambdaFunction attenuation;
+    public LambdaFunctionResource refractionIndex;
+    public LambdaFunctionResource attenuation;
 
     public Medium(String medium) {
         if(medium.equals("clad")) {
-            refractionIndex = LambdaFunction.constant(1.4);
-            attenuation = new CSVInterpolator(MEDIUM_PREFIX+"/attenuationPMMA.csv", 500e-9, 0.01842*0.5);
+            refractionIndex = LambdaConstantResource.builder()
+                    .value(1.4)
+                    .build();
+            attenuation = LambdaCsvResource.builder()
+                    .filename(MEDIUM_PREFIX+"attenuationPMMA")
+                    .peakLL(500e-9)
+                    .peakValue(0.01842*0.5)
+                    .llColumn(0)
+                    .valueColumn(1)
+                    .build();
         } else if(medium.equals("PMMA")) {
-            refractionIndex = new LambdaFunction() {
+            refractionIndex = new LambdaFunctionResource() {
                 @Override
                 public double eval(double lambda) {
                     return Math.sqrt(1/(-8.226e-15/(lambda*lambda)+0.8393)+1);
                 }
             };
-            attenuation = new CSVInterpolator(MEDIUM_PREFIX+"/attenuationPMMA.csv", 500e-9, 0.01842);
+            attenuation = LambdaCsvResource.builder()
+                    .filename(MEDIUM_PREFIX+"attenuationPMMA")
+                    .peakLL(500e-9)
+                    .peakValue(0.01842)
+                    .llColumn(0)
+                    .valueColumn(1)
+                    .build();
         } else {
-            refractionIndex = LambdaFunction.constant(1);
-            attenuation = LambdaFunction.constant(0);
+            refractionIndex = LambdaConstantResource.builder()
+                    .value(1)
+                    .build();
+            attenuation = LambdaConstantResource.builder()
+                    .value(0)
+                    .build();
         }
     }
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class CSVInterpolatorTest {
     @Test
     void csvInterpolatorTest() {
-        CSVInterpolator csvInterpolator = new CSVInterpolator("/sigmaabs_Rh6G.csv", 530.58e-9, 4.3298e-20);
+        CSVInterpolator csvInterpolator = new CSVInterpolator("sigmaabs_Rh6G", 530.58e-9, 4.3298e-20);
 
         double[] rawLambdas = csvInterpolator.getRawLambdas();
         double[] rawValues = csvInterpolator.getRawValues();

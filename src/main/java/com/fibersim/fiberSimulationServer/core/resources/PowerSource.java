@@ -1,17 +1,23 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
-import com.fibersim.fiberSimulationServer.resources.CSVInterpolator;
+import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
+import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
 
 public class PowerSource {
     private static final String SOURCE_PREFIX = "";
 
-    public LambdaFunction I;
+    public LambdaFunctionResource I;
 
     public PowerSource(String source) {
         switch(source) {
             default:
-                I = new CSVInterpolator(SOURCE_PREFIX+"/solarIrradiance.csv", 500e-9, 1.5297e9, 0, 2);
+                I = LambdaCsvResource.builder()
+                        .filename(SOURCE_PREFIX+"solarIrradiance")
+                        .peakLL(500e-9)
+                        .peakValue(1.5297e9)
+                        .llColumn(0)
+                        .valueColumn(2)
+                        .build();
                 break;
         }
     }

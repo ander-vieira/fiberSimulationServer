@@ -10,7 +10,7 @@ import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import com.fibersim.fiberSimulationServer.resources.DyeDopantReader;
-import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
+import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class IterativeSimService {
         double dz = 5e-5;
         int numZZ = (int)Math.ceil(params.getLength()/dz);
 
-        DyeDopantDTO dopant = dyeDopantReader.readDopant("Rh6G");
+        DyeDopantResource dopant = dyeDopantReader.readDopant("Rh6G");
 
         int numLL = 151;
         LambdaRange lambdaRange = new LambdaRange();

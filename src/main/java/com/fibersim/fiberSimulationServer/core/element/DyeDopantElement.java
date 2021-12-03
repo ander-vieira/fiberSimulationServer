@@ -3,7 +3,7 @@ package com.fibersim.fiberSimulationServer.core.element;
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
-import com.fibersim.fiberSimulationServer.resources.dto.DyeDopantDTO;
+import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
 
 public class DyeDopantElement implements Element {
     private final double N;
@@ -14,7 +14,7 @@ public class DyeDopantElement implements Element {
     private final double sumEmi;
     Check check = Check.alwaysTrue;
 
-    public DyeDopantElement(DyeDopantDTO dopant, double N, double[] ll) {
+    public DyeDopantElement(DyeDopantResource dopant, double N, double[] ll) {
         this.N = N;
         this.quantumYield = dopant.getTauNR()/(dopant.getTauRad()+dopant.getTauNR());
         this.ll = ll;
