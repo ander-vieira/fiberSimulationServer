@@ -2,12 +2,16 @@ package com.fibersim.fiberSimulationServer.core.phase;
 
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
 public class PhaseTest {
     @Test
+    @Tag("UnitTest")
     public void phaseTest() {
         Phase planePhase = new PlanePhase(Vector3.Z, Vector3.O);
         Phase cylinderPhase = new CylinderPhase(1, Vector3.O, Vector3.Z);
