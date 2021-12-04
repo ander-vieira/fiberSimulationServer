@@ -2,7 +2,7 @@ package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
-import com.fibersim.fiberSimulationServer.core.resources.LambdaRange;
+import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.resources.PowerSource;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;

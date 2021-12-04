@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.core.resources;
+package com.fibersim.fiberSimulationServer.core.util;
 
 import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 
