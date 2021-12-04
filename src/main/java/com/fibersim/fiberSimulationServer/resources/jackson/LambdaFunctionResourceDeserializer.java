@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
 import com.fibersim.fiberSimulationServer.resources.LambdaConstantResource;
+import com.fibersim.fiberSimulationServer.resources.LambdaCustomResource;
 import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
 import org.springframework.boot.jackson.JsonComponent;
 
@@ -24,6 +25,8 @@ public class LambdaFunctionResourceDeserializer extends JsonDeserializer<LambdaF
             return treeNode.traverse(jsonParser.getCodec()).readValueAs(LambdaConstantResource.class);
         } else if(type.equalsIgnoreCase("csv")) {
             return treeNode.traverse(jsonParser.getCodec()).readValueAs(LambdaCsvResource.class);
+        } else if(type.equalsIgnoreCase("custom")) {
+            return treeNode.traverse(jsonParser.getCodec()).readValueAs(LambdaCustomResource.class);
         } else {
             return null;
         }
