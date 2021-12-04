@@ -2,14 +2,14 @@ package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
-import com.fibersim.fiberSimulationServer.core.resources.Medium;
+import com.fibersim.fiberSimulationServer.resources.MediumResource;
 
 public class AttenuatorElement implements Element {
     double[] alpha;
     Check check = Check.alwaysTrue;
 
-    public AttenuatorElement(Medium medium, double[] ll) {
-        this.alpha = medium.attenuation.getArray(ll);
+    public AttenuatorElement(MediumResource medium, double[] ll) {
+        this.alpha = medium.getAttenuation().getArray(ll);
     }
 
     public AttenuatorElement setCheck(Check check) {

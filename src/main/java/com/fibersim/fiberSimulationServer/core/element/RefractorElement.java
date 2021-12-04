@@ -3,9 +3,9 @@ package com.fibersim.fiberSimulationServer.core.element;
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.phase.Phase;
-import com.fibersim.fiberSimulationServer.core.resources.Medium;
 import com.fibersim.fiberSimulationServer.core.util.MathUtils;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
+import com.fibersim.fiberSimulationServer.resources.MediumResource;
 
 public class RefractorElement implements Element {
     private final Phase interphase;
@@ -13,10 +13,10 @@ public class RefractorElement implements Element {
     private final double[] Nminus;
     Check check = Check.alwaysTrue;
 
-    public RefractorElement(Phase interphase, Medium outMedium, Medium inMedium, double[] ll) {
+    public RefractorElement(Phase interphase, MediumResource outMedium, MediumResource inMedium, double[] ll) {
         this.interphase = interphase;
-        this.Nplus = outMedium.refractionIndex.getArray(ll);
-        this.Nminus = inMedium.refractionIndex.getArray(ll);
+        this.Nplus = outMedium.getRefractionIndex().getArray(ll);
+        this.Nminus = inMedium.getRefractionIndex().getArray(ll);
     }
 
     public RefractorElement setCheck(Check check) {

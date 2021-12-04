@@ -1,0 +1,39 @@
+[
+  {
+    "medium": "air",
+    "refractionIndex": {
+      "type": "constant",
+      "value": 1.0
+    },
+    "attenuation": {
+      "type": "constant",
+      "value": 0.0
+    }
+  },
+  {
+    "medium": "PMMA",
+    "refractionIndex": {
+      "type": "custom",
+      "expression": "Math.sqrt(1/(-8.226e-15/(lambda*lambda)+0.8393)+1)"
+    },
+    "attenuation": {
+      "type": "csv",
+      "filename": "attenuationPMMA",
+      "peakLL": 500e-9,
+      "peakValue": 0.01842
+    }
+  },
+  {
+    "medium": "clad",
+    "refractionIndex": {
+      "type": "constant",
+      "value": 1.4
+    },
+    "attenuation": {
+      "type": "csv",
+      "filename": "attenuationPMMA",
+      "peakLL": 500e-9,
+      "peakValue": 0.00921
+    }
+  }
+]

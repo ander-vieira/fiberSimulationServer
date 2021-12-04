@@ -3,7 +3,6 @@ package com.fibersim.fiberSimulationServer.service;
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
 import com.fibersim.fiberSimulationServer.core.resources.LambdaRange;
-import com.fibersim.fiberSimulationServer.core.resources.Medium;
 import com.fibersim.fiberSimulationServer.core.resources.PowerSource;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
@@ -11,6 +10,8 @@ import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import com.fibersim.fiberSimulationServer.resources.DyeDopantReader;
 import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.MediumReader;
+import com.fibersim.fiberSimulationServer.resources.MediumResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class IterativeSimService {
     SimulationTimer simulationTimer;
     @Autowired
     DyeDopantReader dyeDopantReader;
+    @Autowired
+    MediumReader mediumReader;
 
     public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
         simulationTimer.startTimer();
@@ -49,13 +52,13 @@ public class IterativeSimService {
         PowerSource sun = new PowerSource("AM1.5");
         double[] Isol = sun.I.getArray(ll);
 
-        Medium pmma = new Medium("PMMA");
-        double[] nPMMA = pmma.refractionIndex.getArray(ll);
-        double[] alfaPMMA = pmma.attenuation.getArray(ll);
+        MediumResource pmma = mediumReader.readMedium("PMMA");
+        double[] nPMMA = pmma.getRefractionIndex().getArray(ll);
+        double[] alfaPMMA = pmma.getAttenuation().getArray(ll);
 
-        Medium clad = new Medium("clad");
-        double[] nClad = clad.refractionIndex.getArray(ll);
-        double[] alfaClad = clad.attenuation.getArray(ll);
+        MediumResource clad = mediumReader.readMedium("clad");
+        double[] nClad = clad.getRefractionIndex().getArray(ll);
+        double[] alfaClad = clad.getAttenuation().getArray(ll);
 
         double[] beta = geometricalParams.betaB(nPMMA);
         double[] Kz = geometricalParams.KzB(nPMMA);
