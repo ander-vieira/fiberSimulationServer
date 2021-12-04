@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.fibersim.fiberSimulationServer.resources.LambdaCustomResource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonComponent;
 
 import javax.annotation.PostConstruct;
@@ -27,8 +26,8 @@ public class LambdaCustomResourceDeserializer extends JsonDeserializer<LambdaCus
     public LambdaCustomResource deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
 
-        String expression = treeNode.get("valueColumn") != null ? ((TextNode)treeNode.get("llColumn")).asText() : "0";
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("js");
+        String expression = treeNode.get("expression") != null ? ((TextNode)treeNode.get("expression")).asText() : "0";
+        ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("js");
 
         return LambdaCustomResource.builder()
                 .expression(expression)
