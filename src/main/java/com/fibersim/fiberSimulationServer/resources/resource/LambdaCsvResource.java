@@ -17,7 +17,6 @@ public class LambdaCsvResource extends LambdaFunctionResource {
     private double peakValue;
     private int llColumn;
     private int valueColumn;
-    private boolean useFilter;
     private CSVInterpolator csvInterpolator;
 
     @Override

@@ -21,7 +21,6 @@ public class LambdaCsvResourceDeserializer extends JsonDeserializer<LambdaCsvRes
 
         int llColumn = treeNode.get("llColumn") != null ? ((IntNode)treeNode.get("llColumn")).asInt() : 0;
         int valueColumn = treeNode.get("valueColumn") != null ? ((IntNode)treeNode.get("valueColumn")).asInt() : 1;
-        boolean useFilter = treeNode.get("useFilter") != null && ((BooleanNode)treeNode.get("useFilter")).asBoolean();
 
         return LambdaCsvResource.builder()
                 .filename(((TextNode)treeNode.get("filename")).asText())
@@ -29,7 +28,6 @@ public class LambdaCsvResourceDeserializer extends JsonDeserializer<LambdaCsvRes
                 .peakValue(((DoubleNode)treeNode.get("peakValue")).asDouble())
                 .llColumn(llColumn)
                 .valueColumn(valueColumn)
-                .useFilter(useFilter)
                 .build();
     }
 }
