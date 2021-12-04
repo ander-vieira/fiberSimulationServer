@@ -15,13 +15,17 @@ public class LambdaRange {
         this.maxLambda = maxLambda;
     }
 
+    public void add(double minLambda, double maxLambda) {
+        if(minLambda < this.minLambda) this.minLambda = minLambda;
+        if(maxLambda > this.maxLambda) this.maxLambda = maxLambda;
+    }
+
     public void addDopant(DyeDopantResource dopant) {
-        if(dopant.getMinLambda() < minLambda) minLambda = dopant.getMinLambda();
-        if(dopant.getMaxLambda() > maxLambda) maxLambda = dopant.getMaxLambda();
+        add(dopant.getMinLambda(), dopant.getMaxLambda());
     }
 
     public double[] getLL(int numLL) {
-        if(numLL <= 1) {
+        if(numLL <= 1 || maxLambda < minLambda) {
             return null;
         } else {
             double[] result = new double[numLL];
@@ -35,7 +39,7 @@ public class LambdaRange {
     }
 
     public double getDlambda(int numLL) {
-        if(numLL < 2) return 0;
+        if(numLL <= 1 || maxLambda < minLambda) return 0;
         else return (maxLambda-minLambda)/(numLL-1);
     }
 }
