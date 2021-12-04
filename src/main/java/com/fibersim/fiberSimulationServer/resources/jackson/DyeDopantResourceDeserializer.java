@@ -18,8 +18,8 @@ public class DyeDopantResourceDeserializer extends JsonDeserializer<DyeDopantRes
     public DyeDopantResource deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
 
-        LambdaFunctionResource sigmaabsParams = treeNode.get("sigmaabs").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
-        LambdaFunctionResource sigmaemiParams = treeNode.get("sigmaemi").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
+        LambdaFunctionResource sigmaabs = treeNode.get("sigmaabs").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
+        LambdaFunctionResource sigmaemi = treeNode.get("sigmaemi").traverse(jsonParser.getCodec()).readValueAs(LambdaFunctionResource.class);
 
         return DyeDopantResource.builder()
                 .dopant(((TextNode)treeNode.get("dopant")).asText())
@@ -27,8 +27,8 @@ public class DyeDopantResourceDeserializer extends JsonDeserializer<DyeDopantRes
                 .tauNR(((DoubleNode)treeNode.get("tauNR")).asDouble())
                 .minLambda(((DoubleNode)treeNode.get("minLambda")).asDouble())
                 .maxLambda(((DoubleNode)treeNode.get("maxLambda")).asDouble())
-                .sigmaabs(sigmaabsParams)
-                .sigmaemi(sigmaemiParams)
+                .sigmaabs(sigmaabs)
+                .sigmaemi(sigmaemi)
                 .build();
     }
 }
