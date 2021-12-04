@@ -86,66 +86,67 @@ public class IterativeSimService {
             PNconst2[k] = Kz[k]*(sigmaabs[k]+sigmaemi[k])*dz;
         }
 
-        double[][] P = new double[numZZ][numLL];
-        double[][] Pleft = new double[numZZ][numLL];
+        double[] finalP = new double[numLL];
+        double[] wabs = new double[numZZ-1];
+        double[] west = new double[numZZ-1];
         double[] N2 = new double[numZZ-1];
+        double lambdaP, lambdaPleft, error, e, A, b, evalN2, oldLambdaP, oldLambdaPleft;
 
-        double error;
         do {
-            for(int k = 0 ; k < numLL ; k++) {
-                P[0][k] = 0;
-                Pleft[numZZ-1][k] = 0;
-            }
-
-            double[] previousP = P[numZZ-1].clone();
 
             //Update N2
             for(int j = 0 ; j < numZZ-1 ; j++) {
-                double wabs = 0, west = 0;
-                for(int k = 0 ; k < numLL ; k++) {
-                    double evalP = (P[j][k]+P[j+1][k]+Pleft[j][k]+Pleft[j+1][k])/2;
 
-                    wabs += Nabsconst[k]*evalP;
-                    west += Nestconst[k]*evalP;
-                }
-
-                double A = 1/dopant.getTauRad()+1/dopant.getTauNR()+wabs+west;
-                double b = Nsolconst+ params.getConcentration()*wabs;
+                A = 1/dopant.getTauRad()+1/dopant.getTauNR()+wabs[j]+west[j];
+                b = Nsolconst + params.getConcentration()*wabs[j];
 
                 N2[j] = b/A;
+
+                wabs[j] = 0;
+                west[j] = 0;
             }
 
-            //Update P
-            for(int j = 0 ; j < numZZ-1 ; j++) {
-                double evalN2 = N2[j];
+            double[] previousP = finalP.clone();
 
-                for(int k = 0 ; k < numLL ; k++) {
-                    double evalP = P[j][k];
+            for(int k = 0 ; k < numLL ; k++) {
+                //Propagate P to the right
+                lambdaP = 0;
+                for(int j = 0 ; j < numZZ-1 ; j++) {
+                    evalN2 = N2[j];
+                    oldLambdaP = lambdaP;
 
-                    P[j+1][k] = evalP;
-                    P[j+1][k] -= Pattconst[k]*evalP;
-                    P[j+1][k] += PNconst1[k]*evalN2;
-                    P[j+1][k] += PNconst2[k]*evalN2*evalP;
+                    //Update P
+                    lambdaP -= Pattconst[k]*oldLambdaP;
+                    lambdaP += PNconst1[k]*evalN2;
+                    lambdaP += PNconst2[k]*evalN2*oldLambdaP;
+
+                    //Update wabs and west
+                    wabs[j] += Nabsconst[k]*(oldLambdaP+lambdaP)/2;
+                    west[j] += Nestconst[k]*(oldLambdaP+lambdaP)/2;
                 }
-            }
 
-            //Update Pleft
-            for(int j = numZZ-1 ; j > 0 ; j--) {
-                double evalN2 = N2[j-1];
+                //Propagate P to the left
+                lambdaPleft = 0;
+                for(int j = numZZ-1 ; j > 0 ; j--) {
+                    evalN2 = N2[j-1];
+                    oldLambdaPleft = lambdaPleft;
 
-                for(int k = 0 ; k < numLL ; k++) {
-                    double evalP = Pleft[j][k];
+                    //Update Pleft
+                    lambdaPleft -= Pattconst[k]*oldLambdaPleft;
+                    lambdaPleft += PNconst1[k]*evalN2;
+                    lambdaPleft += PNconst2[k]*evalN2*oldLambdaPleft;
 
-                    Pleft[j-1][k] = evalP;
-                    Pleft[j-1][k] -= Pattconst[k]*evalP;
-                    Pleft[j-1][k] += PNconst1[k]*evalN2*evalP;
-                    Pleft[j-1][k] += PNconst2[k]*evalN2*evalP;
+                    //Update wabs and west
+                    wabs[j-1] += Nabsconst[k]*(oldLambdaPleft+lambdaPleft)/2;
+                    west[j-1] += Nestconst[k]*(oldLambdaPleft+lambdaPleft)/2;
                 }
+
+                finalP[k] = lambdaP;
             }
 
             error = 0;
             for(int k = 0 ; k < numLL ; k++) {
-                double e = Math.abs(P[numZZ-1][k]-previousP[k])/(P[numZZ-1][k]+Double.MIN_VALUE);
+                e = Math.abs(finalP[k]-previousP[k])/(finalP[k]+Double.MIN_VALUE);
 
                 if(e > error) error = e;
             }
@@ -153,7 +154,7 @@ public class IterativeSimService {
 
         return IterativeSimResponseDTO.builder()
                 .elapsedTime(simulationTimer.getTime())
-                .lightP(Arrays.stream(P[numZZ-1]).sum())
+                .lightP(Arrays.stream(finalP).sum())
                 .build();
     }
 }
