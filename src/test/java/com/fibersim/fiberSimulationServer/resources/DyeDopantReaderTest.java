@@ -1,5 +1,7 @@
 package com.fibersim.fiberSimulationServer.resources;
 
+import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

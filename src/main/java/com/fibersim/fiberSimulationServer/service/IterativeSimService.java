@@ -8,10 +8,10 @@ import com.fibersim.fiberSimulationServer.core.util.Constants;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
-import com.fibersim.fiberSimulationServer.resources.DyeDopantReader;
-import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
-import com.fibersim.fiberSimulationServer.resources.MediumReader;
-import com.fibersim.fiberSimulationServer.resources.MediumResource;
+import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.reader.MediumReader;
+import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

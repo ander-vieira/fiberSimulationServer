@@ -1,7 +1,7 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
-import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCsvResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaFunctionResource;
 
 public class PowerSource {
     private static final String SOURCE_PREFIX = "";

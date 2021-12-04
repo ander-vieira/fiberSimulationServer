@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.resources;
 
-import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 
 public class LambdaRange {
     public double minLambda;

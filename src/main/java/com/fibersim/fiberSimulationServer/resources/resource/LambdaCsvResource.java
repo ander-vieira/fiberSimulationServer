@@ -1,6 +1,7 @@
-package com.fibersim.fiberSimulationServer.resources;
+package com.fibersim.fiberSimulationServer.resources.resource;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fibersim.fiberSimulationServer.resources.interpolate.CSVInterpolator;
 import com.fibersim.fiberSimulationServer.resources.jackson.LambdaCsvResourceDeserializer;
 import lombok.Builder;
 import lombok.Getter;

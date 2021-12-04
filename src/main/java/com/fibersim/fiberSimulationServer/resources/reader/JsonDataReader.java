@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.resources;
+package com.fibersim.fiberSimulationServer.resources.reader;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.type.TypeReference;

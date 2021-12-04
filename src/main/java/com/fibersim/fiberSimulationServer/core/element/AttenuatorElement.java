@@ -2,7 +2,7 @@ package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
-import com.fibersim.fiberSimulationServer.resources.MediumResource;
+import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
 
 public class AttenuatorElement implements Element {
     double[] alpha;

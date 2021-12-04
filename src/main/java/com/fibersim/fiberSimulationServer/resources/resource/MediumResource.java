@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.resources;
+package com.fibersim.fiberSimulationServer.resources.resource;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fibersim.fiberSimulationServer.resources.jackson.MediumResourceDeserializer;

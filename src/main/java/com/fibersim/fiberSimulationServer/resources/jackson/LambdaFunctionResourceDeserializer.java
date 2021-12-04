@@ -5,10 +5,10 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fibersim.fiberSimulationServer.resources.LambdaConstantResource;
-import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
-import com.fibersim.fiberSimulationServer.resources.LambdaCustomResource;
-import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaConstantResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCsvResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCustomResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaFunctionResource;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;

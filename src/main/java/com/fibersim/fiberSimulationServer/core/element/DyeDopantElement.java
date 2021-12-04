@@ -3,7 +3,7 @@ package com.fibersim.fiberSimulationServer.core.element;
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
-import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 
 public class DyeDopantElement implements Element {
     private final double N;

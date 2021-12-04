@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fibersim.fiberSimulationServer.resources.LambdaCustomResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCustomResource;
 import org.springframework.boot.jackson.JsonComponent;
 
 import javax.annotation.PostConstruct;

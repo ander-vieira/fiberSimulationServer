@@ -1,5 +1,6 @@
-package com.fibersim.fiberSimulationServer.resources;
+package com.fibersim.fiberSimulationServer.resources.interpolate;
 
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCsvResource;
 import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

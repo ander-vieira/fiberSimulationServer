@@ -5,7 +5,7 @@ import com.fibersim.fiberSimulationServer.core.check.Check;
 import com.fibersim.fiberSimulationServer.core.phase.Phase;
 import com.fibersim.fiberSimulationServer.core.util.MathUtils;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
-import com.fibersim.fiberSimulationServer.resources.MediumResource;
+import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
 
 public class RefractorElement implements Element {
     private final Phase interphase;

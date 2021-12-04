@@ -1,5 +1,6 @@
 package com.fibersim.fiberSimulationServer.resources;
 
+import com.fibersim.fiberSimulationServer.resources.interpolate.CSVInterpolator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

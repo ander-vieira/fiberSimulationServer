@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fibersim.fiberSimulationServer.resources.DyeDopantResource;
-import com.fibersim.fiberSimulationServer.resources.LambdaFunctionResource;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaFunctionResource;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;

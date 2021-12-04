@@ -1,5 +1,6 @@
-package com.fibersim.fiberSimulationServer.resources;
+package com.fibersim.fiberSimulationServer.resources.reader;
 
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

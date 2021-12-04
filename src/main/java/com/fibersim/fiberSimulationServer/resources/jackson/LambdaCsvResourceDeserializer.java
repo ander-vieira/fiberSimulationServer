@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.fibersim.fiberSimulationServer.resources.LambdaCsvResource;
+import com.fibersim.fiberSimulationServer.resources.resource.LambdaCsvResource;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;
