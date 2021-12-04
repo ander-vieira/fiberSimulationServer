@@ -1,0 +1,13 @@
+[
+  {
+    "source": "AM1.5",
+    "irradiance": {
+      "type": "csv",
+      "filename": "solarIrradiance",
+      "peakLL": 500e-9,
+      "peakValue": 1.5297e9,
+      "llColumn": 0,
+      "valueColumn": 2
+    }
+  }
+]

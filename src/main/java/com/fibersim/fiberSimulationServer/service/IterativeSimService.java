@@ -2,16 +2,17 @@ package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
-import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
-import com.fibersim.fiberSimulationServer.core.resources.PowerSource;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
+import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
-import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import com.fibersim.fiberSimulationServer.resources.reader.MediumReader;
+import com.fibersim.fiberSimulationServer.resources.reader.PowerSourceReader;
+import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
+import com.fibersim.fiberSimulationServer.resources.resource.PowerSourceResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class IterativeSimService {
     DyeDopantReader dyeDopantReader;
     @Autowired
     MediumReader mediumReader;
+    @Autowired
+    PowerSourceReader powerSourceReader;
 
     public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
         simulationTimer.startTimer();
@@ -49,8 +52,8 @@ public class IterativeSimService {
         double sumEmi = 0;
         for(double sigma: sigmaemi) sumEmi += sigma;
 
-        PowerSource sun = new PowerSource("AM1.5");
-        double[] Isol = sun.I.getArray(ll);
+        PowerSourceResource sun = powerSourceReader.readSource("AM1.5");
+        double[] Isol = sun.getIrradiance().getArray(ll);
 
         MediumResource pmma = mediumReader.readMedium("PMMA");
         double[] nPMMA = pmma.getRefractionIndex().getArray(ll);
