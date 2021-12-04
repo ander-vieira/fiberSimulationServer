@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class PowerSourceReader extends JsonDataReader {
     @Override
     protected String jsonDataFile() {
-        return "/powerSources.json";
+        return "powerSources";
     }
 
     public PowerSourceResource readSource(String powerSource) {

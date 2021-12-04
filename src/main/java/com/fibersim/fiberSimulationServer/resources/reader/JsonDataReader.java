@@ -15,7 +15,8 @@ import java.util.Scanner;
 
 @Component
 public abstract class JsonDataReader {
-    private static final String JSON_PREFIX = "/json";
+    private static final String JSON_PREFIX = "/json/";
+    private static final String JSON_SUFFIX = ".json";
 
     protected List<Object> jsonDataList;
 
@@ -26,7 +27,7 @@ public abstract class JsonDataReader {
 
     @PostConstruct
     private void readJsonData() {
-        Resource resource = new ClassPathResource(JSON_PREFIX+jsonDataFile());
+        Resource resource = new ClassPathResource(JSON_PREFIX+jsonDataFile()+JSON_SUFFIX);
         String jsonString = "";
         jsonDataList = null;
 

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class MediumReader extends JsonDataReader {
     @Override
     protected String jsonDataFile() {
-        return "/mediums.json";
+        return "mediums";
     }
 
     public MediumResource readMedium(String medium) {

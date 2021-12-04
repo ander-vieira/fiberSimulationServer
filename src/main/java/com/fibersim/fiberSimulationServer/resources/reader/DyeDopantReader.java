@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class DyeDopantReader extends JsonDataReader {
     @Override
     protected String jsonDataFile() {
-        return "/dyeDopants.json";
+        return "dyeDopants";
     }
 
     public DyeDopantResource readDopant(String dopant) {
