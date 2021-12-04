@@ -15,13 +15,6 @@ import java.io.IOException;
 
 @JsonComponent
 public class LambdaCustomResourceDeserializer extends JsonDeserializer<LambdaCustomResource> {
-    ScriptEngineManager scriptEngineManager;
-
-    @PostConstruct
-    public void setupScriptEngineManager() {
-        scriptEngineManager = new ScriptEngineManager();
-    }
-
     @Override
     public LambdaCustomResource deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
