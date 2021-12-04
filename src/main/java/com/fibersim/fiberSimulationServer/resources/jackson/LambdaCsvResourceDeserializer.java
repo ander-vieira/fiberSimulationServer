@@ -20,7 +20,7 @@ public class LambdaCsvResourceDeserializer extends JsonDeserializer<LambdaCsvRes
         TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
 
         int llColumn = treeNode.get("llColumn") != null ? ((IntNode)treeNode.get("llColumn")).asInt() : 0;
-        int valueColumn = treeNode.get("valueColumn") != null ? ((IntNode)treeNode.get("llColumn")).asInt() : 1;
+        int valueColumn = treeNode.get("valueColumn") != null ? ((IntNode)treeNode.get("valueColumn")).asInt() : 1;
         boolean useFilter = treeNode.get("useFilter") != null && ((BooleanNode)treeNode.get("useFilter")).asBoolean();
 
         return LambdaCsvResource.builder()
