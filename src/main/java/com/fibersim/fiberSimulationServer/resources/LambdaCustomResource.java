@@ -22,6 +22,7 @@ public class LambdaCustomResource extends LambdaFunctionResource {
         double value = 0;
 
         try {
+            scriptEngine.put("lambda", lambda);
             value = (double)scriptEngine.eval(expression);
         } catch(ScriptException e) {
             e.printStackTrace();
