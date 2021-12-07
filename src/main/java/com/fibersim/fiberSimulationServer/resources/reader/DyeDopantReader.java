@@ -1,5 +1,7 @@
 package com.fibersim.fiberSimulationServer.resources.reader;
 
+import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
+import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
 import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,21 @@ public class DyeDopantReader extends JsonDataReader<DyeDopantResource> {
 
         if(matchingParams.size() > 0) {
             return matchingParams.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public DyeDopantDTO readDopant(DyeDopantParamsDTO dyeDopantParamsDTO) {
+        List<DyeDopantResource> matchingParams = elementList.stream()
+                .filter(params -> params.getDopant().equals(dyeDopantParamsDTO.getDopant()))
+                .collect(Collectors.toList());
+
+        if(matchingParams.size() > 0) {
+            return DyeDopantDTO.builder()
+                    .dyeDopant(matchingParams.get(0))
+                    .concentration(dyeDopantParamsDTO.getConcentration())
+                    .build();
         } else {
             return null;
         }

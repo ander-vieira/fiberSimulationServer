@@ -4,11 +4,7 @@ import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.core.util.MathUtils;
 import com.fibersim.fiberSimulationServer.core.util.UnitIntegral;
 import com.fibersim.fiberSimulationServer.core.util.UnitIntegrand;
-import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
-import com.fibersim.fiberSimulationServer.dto.MediumParamsDTO;
-import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
-import com.fibersim.fiberSimulationServer.resources.reader.MediumReader;
-import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
+import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
 import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,10 +13,6 @@ import org.springframework.stereotype.Component;
 public class SideAbsorption {
     @Autowired
     private UnitIntegral unitIntegral;
-    @Autowired
-    DyeDopantReader dyeDopantReader;
-    @Autowired
-    MediumReader mediumReader;
 
 //    public LambdaFunction noReflections(double diameter, double q, double nCore, double alphaCore, double alphaDopant, double nClad, double alphaClad) {
 //        return new LambdaFunction() {
@@ -65,16 +57,12 @@ public class SideAbsorption {
 //        };
 //    }
 
-    public LambdaFunction twoInterphases(double diameter, double q, DyeDopantParamsDTO dyeDopantParams, MediumParamsDTO mediumInParams, MediumParamsDTO mediumOutParams) {
-        DyeDopantResource dyeDopant = dyeDopantReader.readDopant(dyeDopantParams.getDopant());
-        MediumResource mediumIn = mediumReader.readMedium(mediumInParams.getMedium());
-        MediumResource mediumOut = mediumReader.readMedium(mediumOutParams.getMedium());
-
+    public LambdaFunction twoInterphases(double diameter, double q, DyeDopantDTO dyeDopantDTO, MediumResource mediumIn, MediumResource mediumOut) {
         return new LambdaFunction() {
             @Override
             public double eval(double lambda) {
                 double nCore = mediumIn.getRefractionIndex().eval(lambda);
-                double alphaDopant = dyeDopant.getSigmaabs().eval(lambda)*dyeDopantParams.getConcentration();
+                double alphaDopant = dyeDopantDTO.getDyeDopant().getSigmaabs().eval(lambda)*dyeDopantDTO.getConcentration();
                 double alphaCore = mediumIn.getAttenuation().eval(lambda)+alphaDopant;
                 double nClad = mediumOut.getRefractionIndex().eval(lambda);
                 double alphaClad = mediumOut.getAttenuation().eval(lambda);
