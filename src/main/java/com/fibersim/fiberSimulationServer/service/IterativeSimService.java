@@ -3,10 +3,12 @@ package com.fibersim.fiberSimulationServer.service;
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
+import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
+import com.fibersim.fiberSimulationServer.dto.MediumParamsDTO;
 import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
 import com.fibersim.fiberSimulationServer.resources.reader.MediumReader;
 import com.fibersim.fiberSimulationServer.resources.reader.PowerSourceReader;
@@ -59,21 +61,11 @@ public class IterativeSimService {
         double[] nPMMA = pmma.getRefractionIndex().getArray(ll);
         double[] alfaPMMA = pmma.getAttenuation().getArray(ll);
 
-        MediumResource clad = mediumReader.readMedium("clad");
-        double[] nClad = clad.getRefractionIndex().getArray(ll);
-        double[] alfaClad = clad.getAttenuation().getArray(ll);
-
         double[] beta = geometricalParams.betaB(nPMMA);
         double[] Kz = geometricalParams.KzB(nPMMA);
-
-        double[] alphaCore = new double[numLL];
-        double[] alphaDopant = new double[numLL];
-        for(int k = 0 ; k < numLL ; k++) {
-            alphaDopant[k] = params.getDyeDopant().getConcentration()*sigmaabs[k];
-            alphaCore[k] = alfaPMMA[k]+alphaDopant[k];
-        }
-
-        double[] sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, nPMMA, alphaCore, alphaDopant, nClad, alfaClad);
+        LambdaFunction sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, params.getDyeDopant(),
+                MediumParamsDTO.builder().medium("PMMA").build(),
+                MediumParamsDTO.builder().medium("clad").build());
 
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];
@@ -84,7 +76,7 @@ public class IterativeSimService {
         for(int k = 0 ; k < numLL ; k++) {
             double concentrationToPower = Math.PI* Constants.h*Constants.c* params.getDiameter()* params.getDiameter()/(4*ll[k]);
 
-            Nsolconst += params.getDiameter()*Isol[k]*sideEfficiency[k]*dlambda/concentrationToPower;
+            Nsolconst += params.getDiameter()*Isol[k]*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
             Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz[k]*sigmaemi[k]/concentrationToPower;
             Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getDyeDopant().getConcentration()*sigmaabs[k])*dz;
