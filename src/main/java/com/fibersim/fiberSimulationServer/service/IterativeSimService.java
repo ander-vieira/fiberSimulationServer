@@ -55,14 +55,9 @@ public class IterativeSimService {
         for(double sigma: sigmaemi) sumEmi += sigma;
 
         PowerSourceResource sun = powerSourceReader.readSource("AM1.5");
-        double[] Isol = sun.getIrradiance().getArray(ll);
 
         MediumResource pmma = mediumReader.readMedium("PMMA");
-        double[] nPMMA = pmma.getRefractionIndex().getArray(ll);
-        double[] alfaPMMA = pmma.getAttenuation().getArray(ll);
 
-        double[] beta = geometricalParams.betaB(nPMMA);
-        double[] Kz = geometricalParams.KzB(nPMMA);
         LambdaFunction sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, params.getDyeDopant(),
                 MediumParamsDTO.builder().medium("PMMA").build(),
                 MediumParamsDTO.builder().medium("clad").build());
@@ -75,13 +70,18 @@ public class IterativeSimService {
         double[] PNconst2 = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
             double concentrationToPower = Math.PI* Constants.h*Constants.c* params.getDiameter()* params.getDiameter()/(4*ll[k]);
+            double nPMMA = pmma.getRefractionIndex().eval(ll[k]);
+            double alfaPMMA = pmma.getAttenuation().eval(ll[k]);
+            double beta = geometricalParams.betaB(nPMMA);
+            double Kz = geometricalParams.KzB(nPMMA);
+            double Isol = sun.getIrradiance().eval(ll[k]);
 
-            Nsolconst += params.getDiameter()*Isol[k]*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
-            Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
-            Nestconst[k] = Kz[k]*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getDyeDopant().getConcentration()*sigmaabs[k])*dz;
-            PNconst1[k] = concentrationToPower*beta[k]*sigmaemi[k]/sumEmi*dz/dopant.getTauRad();
-            PNconst2[k] = Kz[k]*(sigmaabs[k]+sigmaemi[k])*dz;
+            Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
+            Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
+            Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
+            Pattconst[k] = Kz*(alfaPMMA+ params.getDyeDopant().getConcentration()*sigmaabs[k])*dz;
+            PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dopant.getTauRad();
+            PNconst2[k] = Kz*(sigmaabs[k]+sigmaemi[k])*dz;
         }
 
         double[] finalP = new double[numLL];
