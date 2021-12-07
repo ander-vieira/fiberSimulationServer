@@ -69,7 +69,7 @@ public class IterativeSimService {
         double[] alphaCore = new double[numLL];
         double[] alphaDopant = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
-            alphaDopant[k] = params.getConcentration()*sigmaabs[k];
+            alphaDopant[k] = params.getDyeDopant().getConcentration()*sigmaabs[k];
             alphaCore[k] = alfaPMMA[k]+alphaDopant[k];
         }
 
@@ -87,7 +87,7 @@ public class IterativeSimService {
             Nsolconst += params.getDiameter()*Isol[k]*sideEfficiency[k]*dlambda/concentrationToPower;
             Nabsconst[k] = Kz[k]*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz[k]*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getConcentration()*sigmaabs[k])*dz;
+            Pattconst[k] = Kz[k]*(alfaPMMA[k]+ params.getDyeDopant().getConcentration()*sigmaabs[k])*dz;
             PNconst1[k] = concentrationToPower*beta[k]*sigmaemi[k]/sumEmi*dz/dopant.getTauRad();
             PNconst2[k] = Kz[k]*(sigmaabs[k]+sigmaemi[k])*dz;
         }
@@ -104,7 +104,7 @@ public class IterativeSimService {
             for(int j = 0 ; j < numZZ-1 ; j++) {
 
                 A = 1/dopant.getTauRad()+1/dopant.getTauNR()+wabs[j]+west[j];
-                b = Nsolconst + params.getConcentration()*wabs[j];
+                b = Nsolconst + params.getDyeDopant().getConcentration()*wabs[j];
 
                 N2[j] = b/A;
 

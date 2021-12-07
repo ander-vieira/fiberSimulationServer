@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class IterativeSimParamsDTO {
-    private String dopant;
-    private double concentration;
+    private DyeDopantParamsDTO dyeDopant;
     private double diameter;
     private double cladRatio;
     private double length;

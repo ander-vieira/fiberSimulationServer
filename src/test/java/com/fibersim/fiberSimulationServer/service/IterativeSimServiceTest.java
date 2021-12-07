@@ -1,5 +1,6 @@
 package com.fibersim.fiberSimulationServer.service;
 
+import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +17,10 @@ public class IterativeSimServiceTest {
     void iterativeSimServiceTest() {
         IterativeSimParamsDTO params =
                 IterativeSimParamsDTO.builder()
-                .dopant("Rh6G")
-                .concentration(1.5e22)
+                .dyeDopant(DyeDopantParamsDTO.builder()
+                        .dopant("Rh6G")
+                        .concentration(1.5e22)
+                        .build())
                 .diameter(1e-3)
                 .cladRatio(0.98)
                 .length(0.001)
