@@ -45,7 +45,7 @@ public class IterativeSimService {
         LambdaRange lambdaRange = new LambdaRange();
         lambdaRange.addDopant(dopant);
         double[] ll = lambdaRange.getLL(numLL);
-        double dlambda = lambdaRange.getDlambda(numLL);
+        double dlambda = lambdaRange.getDLambda(numLL);
 
         double[] sigmaabs = dopant.getSigmaabs().getArray(ll);
         double[] sigmaemi = dopant.getSigmaemi().getArray(ll);

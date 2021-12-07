@@ -12,15 +12,15 @@ public class LambdaRangeTest {
     public void lambdaRangeTest() {
         LambdaRange lambdaRange = new LambdaRange();
 
-        Assertions.assertEquals(0, lambdaRange.getDlambda(1), 1e-12);
-        Assertions.assertEquals(0, lambdaRange.getDlambda(11), 1e-12);
+        Assertions.assertEquals(0, lambdaRange.getDLambda(1), 1e-12);
+        Assertions.assertEquals(0, lambdaRange.getDLambda(11), 1e-12);
         Assertions.assertNull(lambdaRange.getLL(1));
         Assertions.assertNull(lambdaRange.getLL(11));
 
         lambdaRange.add(300e-9, 700e-9);
 
-        Assertions.assertEquals(0, lambdaRange.getDlambda(1), 1e-12);
-        Assertions.assertEquals(40e-9, lambdaRange.getDlambda(11), 1e-12);
+        Assertions.assertEquals(0, lambdaRange.getDLambda(1), 1e-12);
+        Assertions.assertEquals(40e-9, lambdaRange.getDLambda(11), 1e-12);
         Assertions.assertNull(lambdaRange.getLL(1));
 
         double[] ll = lambdaRange.getLL(11);

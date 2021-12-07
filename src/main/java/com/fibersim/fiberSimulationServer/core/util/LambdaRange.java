@@ -24,22 +24,22 @@ public class LambdaRange {
         add(dopant.getMinLambda(), dopant.getMaxLambda());
     }
 
-    public double[] getLL(int numLL) {
-        if(numLL <= 1 || maxLambda < minLambda) {
+    public double[] getLL(int numLambda) {
+        if(numLambda <= 1 || maxLambda < minLambda) {
             return null;
         } else {
-            double[] result = new double[numLL];
+            double[] result = new double[numLambda];
 
-            for(int i = 0 ; i < numLL ; i++) {
-                result[i] = minLambda + (maxLambda-minLambda)*(i)/(numLL-1);
+            for(int i = 0 ; i < numLambda ; i++) {
+                result[i] = minLambda + (maxLambda-minLambda)*(i)/(numLambda-1);
             }
 
             return result;
         }
     }
 
-    public double getDlambda(int numLL) {
-        if(numLL <= 1 || maxLambda < minLambda) return 0;
-        else return (maxLambda-minLambda)/(numLL-1);
+    public double getDLambda(int numLambda) {
+        if(numLambda <= 1 || maxLambda < minLambda) return 0;
+        else return (maxLambda-minLambda)/(numLambda-1);
     }
 }
