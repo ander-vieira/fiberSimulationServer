@@ -10,20 +10,25 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Component
-public abstract class JsonDataReader {
+public abstract class JsonDataReader<T> {
     private static final String JSON_PREFIX = "/json/";
     private static final String JSON_SUFFIX = ".json";
 
-    protected List<Object> jsonDataList;
+    protected List<LinkedHashMap<String, Object>> jsonDataList;
+    protected List<T> elementList;
 
     @Autowired
     ObjectMapper objectMapper;
 
     protected abstract String jsonDataFile();
+
+    protected abstract T mapToObject(LinkedHashMap<String, Object> hashMap);
 
     @PostConstruct
     private void readJsonData() {
@@ -39,6 +44,7 @@ public abstract class JsonDataReader {
 
         try {
             jsonDataList = objectMapper.readValue(jsonString, new TypeReference<>() {});
+            elementList = jsonDataList.stream().map(this::mapToObject).collect(Collectors.toList());
         } catch(JacksonException e) {
             e.printStackTrace();
         }
