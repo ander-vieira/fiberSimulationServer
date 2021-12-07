@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         xhttp.open("POST", "/iterative", true);
         xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(JSON.stringify({"dyeDopant": {"dopant": "Rh6G", "concentration": concentration}, "diameter": diameter, "length": length}));
+        xhttp.send(JSON.stringify({"dyeDopants": [{"dopant": "Rh6G", "concentration": concentration}], "diameter": diameter, "length": length}));
 
         console.log("Simulating with diameter "+diameter+" and length "+length);
     });

@@ -33,18 +33,10 @@ public class DyeDopantReader extends JsonDataReader<DyeDopantResource> {
         }
     }
 
-    public DyeDopantDTO readDopant(DyeDopantParamsDTO dyeDopantParamsDTO) {
-        List<DyeDopantResource> matchingParams = elementList.stream()
-                .filter(params -> params.getDopant().equals(dyeDopantParamsDTO.getDopant()))
-                .collect(Collectors.toList());
-
-        if(matchingParams.size() > 0) {
-            return DyeDopantDTO.builder()
-                    .dyeDopant(matchingParams.get(0))
-                    .concentration(dyeDopantParamsDTO.getConcentration())
-                    .build();
-        } else {
-            return null;
-        }
+    public List<DyeDopantDTO> readDopants(List<DyeDopantParamsDTO> dyeDopantParamsDTO) {
+        return dyeDopantParamsDTO.stream().map(params -> DyeDopantDTO.builder()
+                .dyeDopant(readDopant(params.getDopant()))
+                .concentration(params.getConcentration())
+                .build()).collect(Collectors.toList());
     }
 }

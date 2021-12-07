@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
 public class IterativeSimServiceTest {
     @Autowired
@@ -15,12 +18,15 @@ public class IterativeSimServiceTest {
 
     @Test
     void iterativeSimServiceTest() {
+        List<DyeDopantParamsDTO> dyeDopantParams = new ArrayList<>();
+        dyeDopantParams.add(DyeDopantParamsDTO.builder()
+                .dopant("Rh6G")
+                .concentration(1.5e22)
+                .build());
+
         IterativeSimParamsDTO params =
                 IterativeSimParamsDTO.builder()
-                .dyeDopant(DyeDopantParamsDTO.builder()
-                        .dopant("Rh6G")
-                        .concentration(1.5e22)
-                        .build())
+                .dyeDopants(dyeDopantParams)
                 .diameter(1e-3)
                 .cladRatio(0.98)
                 .length(0.001)

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class IterativeSimService {
@@ -40,7 +41,7 @@ public class IterativeSimService {
         double dz = 5e-5;
         int numZZ = (int)Math.ceil(params.getLength()/dz);
 
-        DyeDopantDTO dyeDopant = dyeDopantReader.readDopant(params.getDyeDopant());
+        List<DyeDopantDTO> dyeDopants = dyeDopantReader.readDopants(params.getDyeDopants());
 
         MediumResource pmma = mediumReader.readMedium("PMMA");
         MediumResource clad = mediumReader.readMedium("clad");
@@ -49,16 +50,18 @@ public class IterativeSimService {
 
         int numLL = 151;
         LambdaRange lambdaRange = new LambdaRange();
-        lambdaRange.addDopant(dyeDopant.getDyeDopant());
+        for(DyeDopantDTO dyeDopant : dyeDopants) {
+            lambdaRange.addDopant(dyeDopant.getDyeDopant());
+        }
         double[] ll = lambdaRange.getLL(numLL);
         double dlambda = lambdaRange.getDLambda(numLL);
 
-        double[] sigmaabs = dyeDopant.getDyeDopant().getSigmaabs().getArray(ll);
-        double[] sigmaemi = dyeDopant.getDyeDopant().getSigmaemi().getArray(ll);
+        double[] sigmaabs = dyeDopants.get(0).getDyeDopant().getSigmaabs().getArray(ll);
+        double[] sigmaemi = dyeDopants.get(0).getDyeDopant().getSigmaemi().getArray(ll);
         double sumEmi = 0;
         for(double sigma: sigmaemi) sumEmi += sigma;
 
-        LambdaFunction sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopant, pmma, clad);
+        LambdaFunction sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopants.get(0), pmma, clad);
 
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];
@@ -77,8 +80,8 @@ public class IterativeSimService {
             Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
             Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz*(alfaPMMA+ params.getDyeDopant().getConcentration()*sigmaabs[k])*dz;
-            PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dyeDopant.getDyeDopant().getTauRad();
+            Pattconst[k] = Kz*(alfaPMMA+ dyeDopants.get(0).getConcentration()*sigmaabs[k])*dz;
+            PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dyeDopants.get(0).getDyeDopant().getTauRad();
             PNconst2[k] = Kz*(sigmaabs[k]+sigmaemi[k])*dz;
         }
 
@@ -93,8 +96,8 @@ public class IterativeSimService {
             //Update N2
             for(int j = 0 ; j < numZZ-1 ; j++) {
 
-                A = 1/dyeDopant.getDyeDopant().getTauRad()+1/dyeDopant.getDyeDopant().getTauNR()+wabs[j]+west[j];
-                b = Nsolconst + params.getDyeDopant().getConcentration()*wabs[j];
+                A = 1/dyeDopants.get(0).getDyeDopant().getTauRad()+1/dyeDopants.get(0).getDyeDopant().getTauNR()+wabs[j]+west[j];
+                b = Nsolconst + dyeDopants.get(0).getConcentration()*wabs[j];
 
                 N2[j] = b/A;
 
