@@ -23,10 +23,6 @@ import java.util.List;
 @Service
 public class IterativeSimService {
     @Autowired
-    SideAbsorption sideAbsorption;
-    @Autowired
-    GeometricalParams geometricalParams;
-    @Autowired
     SimulationTimer simulationTimer;
     @Autowired
     DyeDopantReader dyeDopantReader;
@@ -61,7 +57,7 @@ public class IterativeSimService {
         double sumEmi = 0;
         for(double sigma: sigmaemi) sumEmi += sigma;
 
-        LambdaFunction sideEfficiency = sideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopants.get(0), pmma, clad);
+        LambdaFunction sideEfficiency = SideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopants.get(0), pmma, clad);
 
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];
@@ -70,11 +66,11 @@ public class IterativeSimService {
         double[] PNconst1 = new double[numLL];
         double[] PNconst2 = new double[numLL];
         for(int k = 0 ; k < numLL ; k++) {
-            double concentrationToPower = Math.PI* Constants.h*Constants.c* params.getDiameter()* params.getDiameter()/(4*ll[k]);
+            double concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
             double nPMMA = pmma.getRefractionIndex().eval(ll[k]);
             double alfaPMMA = pmma.getAttenuation().eval(ll[k]);
-            double beta = geometricalParams.betaB(nPMMA);
-            double Kz = geometricalParams.KzB(nPMMA);
+            double beta = GeometricalParams.betaB(nPMMA);
+            double Kz = GeometricalParams.KzB(nPMMA);
             double Isol = sun.getIrradiance().eval(ll[k]);
 
             Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;

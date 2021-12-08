@@ -1,12 +1,9 @@
 package com.fibersim.fiberSimulationServer.core.util;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class UnitIntegral {
     private static final int NUM_POINTS = 10000;
 
-    public double integrate(UnitIntegrand integrand, double uCut) {
+    public static double integrate(UnitIntegrand integrand, double uCut) {
         double result = 0;
 
         for(int i = 0; i < NUM_POINTS; i++) {
@@ -18,7 +15,7 @@ public class UnitIntegral {
         return result;
     }
 
-    public double integrate(UnitIntegrand integrand) {
+    public static double integrate(UnitIntegrand integrand) {
         return integrate(integrand,1);
     }
 }

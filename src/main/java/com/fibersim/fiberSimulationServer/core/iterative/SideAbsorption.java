@@ -6,14 +6,8 @@ import com.fibersim.fiberSimulationServer.core.util.UnitIntegral;
 import com.fibersim.fiberSimulationServer.core.util.UnitIntegrand;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
 import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class SideAbsorption {
-    @Autowired
-    private UnitIntegral unitIntegral;
-
 //    public LambdaFunction noReflections(double diameter, double q, double nCore, double alphaCore, double alphaDopant, double nClad, double alphaClad) {
 //        return new LambdaFunction() {
 //            @Override
@@ -57,7 +51,7 @@ public class SideAbsorption {
 //        };
 //    }
 
-    public LambdaFunction twoInterphases(double diameter, double q, DyeDopantDTO dyeDopantDTO, MediumResource mediumIn, MediumResource mediumOut) {
+    public static LambdaFunction twoInterphases(double diameter, double q, DyeDopantDTO dyeDopantDTO, MediumResource mediumIn, MediumResource mediumOut) {
         return new LambdaFunction() {
             @Override
             public double eval(double lambda) {
@@ -91,7 +85,7 @@ public class SideAbsorption {
                     return D2/D1*alphaDopant/alphaCore;
                 };
 
-                return unitIntegral.integrate(integrand);
+                return UnitIntegral.integrate(integrand);
             }
         };
     }
