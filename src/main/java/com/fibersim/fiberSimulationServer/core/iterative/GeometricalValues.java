@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.core.iterative;
 
-public class GeometricalParams {
+public class GeometricalValues {
     public static double betaB(double refractionIndex) {
         return (refractionIndex-1)/(2*refractionIndex);
     }
