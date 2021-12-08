@@ -1,6 +1,7 @@
 package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
+import com.fibersim.fiberSimulationServer.core.iterative.IterativeAttenuator;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
 import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
@@ -59,6 +60,8 @@ public class IterativeSimService {
 
         LambdaFunction sideEfficiency = SideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopants.get(0), pmma, clad);
 
+        IterativeAttenuator iterativeAttenuator = new IterativeAttenuator(pmma, ll, dz);
+
         double Nsolconst = 0;
         double[] Nabsconst = new double[numLL];
         double[] Nestconst = new double[numLL];
@@ -68,7 +71,6 @@ public class IterativeSimService {
         for(int k = 0 ; k < numLL ; k++) {
             double concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
             double nPMMA = pmma.getRefractionIndex().eval(ll[k]);
-            double alfaPMMA = pmma.getAttenuation().eval(ll[k]);
             double beta = GeometricalParams.betaB(nPMMA);
             double Kz = GeometricalParams.KzB(nPMMA);
             double Isol = sun.getIrradiance().eval(ll[k]);
@@ -76,7 +78,7 @@ public class IterativeSimService {
             Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
             Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz*(alfaPMMA+ dyeDopants.get(0).getConcentration()*sigmaabs[k])*dz;
+            Pattconst[k] = Kz*dyeDopants.get(0).getConcentration()*sigmaabs[k]*dz;
             PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dyeDopants.get(0).getDyeDopant().getTauRad();
             PNconst2[k] = Kz*(sigmaabs[k]+sigmaemi[k])*dz;
         }
@@ -111,6 +113,7 @@ public class IterativeSimService {
                     oldLambdaP = lambdaP;
 
                     //Update P
+                    lambdaP += iterativeAttenuator.updateP(oldLambdaP, k);
                     lambdaP -= Pattconst[k]*oldLambdaP;
                     lambdaP += PNconst1[k]*evalN2;
                     lambdaP += PNconst2[k]*evalN2*oldLambdaP;
@@ -127,6 +130,7 @@ public class IterativeSimService {
                     oldLambdaPleft = lambdaPleft;
 
                     //Update Pleft
+                    lambdaPleft += iterativeAttenuator.updateP(oldLambdaPleft, k);
                     lambdaPleft -= Pattconst[k]*oldLambdaPleft;
                     lambdaPleft += PNconst1[k]*evalN2;
                     lambdaPleft += PNconst2[k]*evalN2*oldLambdaPleft;
