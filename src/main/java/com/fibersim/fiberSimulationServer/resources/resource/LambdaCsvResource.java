@@ -5,18 +5,16 @@ import com.fibersim.fiberSimulationServer.resources.interpolate.CSVInterpolator;
 import com.fibersim.fiberSimulationServer.resources.jackson.LambdaCsvResourceDeserializer;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 @JsonDeserialize(using = LambdaCsvResourceDeserializer.class)
 public class LambdaCsvResource extends LambdaFunctionResource {
-    private String filename;
-    private double peakLL;
-    private double peakValue;
-    private int llColumn;
-    private int valueColumn;
+    private final String filename;
+    private final double peakLL;
+    private final double peakValue;
+    private final int llColumn;
+    private final int valueColumn;
     private CSVInterpolator csvInterpolator;
 
     @Override

@@ -4,18 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fibersim.fiberSimulationServer.resources.jackson.LambdaCustomResourceDeserializer;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 @Getter
-@Setter
 @Builder
 @JsonDeserialize(using = LambdaCustomResourceDeserializer.class)
 public class LambdaCustomResource extends LambdaFunctionResource {
-    private String expression;
-    private ScriptEngine scriptEngine;
+    private final String expression;
+    private final ScriptEngine scriptEngine;
 
     @Override
     public double eval(double lambda) {
