@@ -2,8 +2,6 @@ package com.fibersim.fiberSimulationServer.core.iterative;
 
 import com.fibersim.fiberSimulationServer.core.util.*;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
-import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
-import com.fibersim.fiberSimulationServer.resources.resource.PowerSourceResource;
 
 public class SideAbsorption {
 //    public LambdaFunction noReflections(double diameter, double q, double nCore, double alphaCore, double alphaDopant, double nClad, double alphaClad) {
@@ -88,29 +86,30 @@ public class SideAbsorption {
 //        };
 //    }
 
-    public static double twoInterphases(PowerSourceResource powerSource, DyeDopantDTO dyeDopantDTO, MediumResource mediumIn, MediumResource mediumOut, double diameter, double q, double dLambda, double[] ll) {
+    public static double twoInterphases(SideAbsorptionParams params) {
         double result = 0, concentrationToPower, irradiance, sideEfficiency;
+        DyeDopantDTO dyeDopantDTO = params.getDyeDopants().get(0);
 
-        for(double lambda: ll) {
-            double nCore = mediumIn.getRefractionIndex().eval(lambda);
+        for(double lambda: params.getLl()) {
+            double nCore = params.getMediumIn().getRefractionIndex().eval(lambda);
             double alphaDopant = dyeDopantDTO.getDyeDopant().getSigmaabs().eval(lambda)*dyeDopantDTO.getConcentration();
-            double alphaCore = mediumIn.getAttenuation().eval(lambda)+alphaDopant;
-            double nClad = mediumOut.getRefractionIndex().eval(lambda);
-            double alphaClad = mediumOut.getAttenuation().eval(lambda);
+            double alphaCore = params.getMediumIn().getAttenuation().eval(lambda)+alphaDopant;
+            double nClad = params.getMediumOut().getRefractionIndex().eval(lambda);
+            double alphaClad = params.getMediumOut().getAttenuation().eval(lambda);
 
             UnitIntegrand integrand = u -> {
                 if(alphaCore == 0) return 0;
 
-                double dCore = diameter*Math.sqrt(q*q-Math.pow(u/nCore,2));
-                double dClad = diameter/2*(Math.sqrt(1-Math.pow(u/nClad,2))-Math.sqrt(q*q-Math.pow(u/nClad,2)));
+                double dCore = params.getDiameter()*Math.sqrt(Math.pow(params.getCladRatio(),2)-Math.pow(u/nCore,2));
+                double dClad = params.getDiameter()/2*(Math.sqrt(1-Math.pow(u/nClad,2))-Math.sqrt(Math.pow(params.getCladRatio(),2)-Math.pow(u/nClad,2)));
 
                 double coreExp = Math.exp(-alphaCore*dCore);
                 double cladExp = Math.exp(-alphaClad*dClad);
 
                 double cosAir = Math.sqrt(1-Math.pow(u,2));
                 double cosClad1 = Math.sqrt(1-Math.pow(u/nClad,2));
-                double cosClad2 = Math.sqrt(1-Math.pow(u/q/nClad,2));
-                double cosCore = Math.sqrt(1-Math.pow(u/q/nCore,2));
+                double cosClad2 = Math.sqrt(1-Math.pow(u/params.getCladRatio()/nClad,2));
+                double cosCore = Math.sqrt(1-Math.pow(u/params.getCladRatio()/nCore,2));
 
                 double fresnelR1 = MathUtils.fresnelR(cosAir, cosClad1, 1, nClad);
                 double fresnelR2 = MathUtils.fresnelR(cosClad2, cosCore, nClad, nCore);
@@ -122,11 +121,11 @@ public class SideAbsorption {
                 return D2/D1*alphaDopant/alphaCore;
             };
 
-            concentrationToPower = Math.PI*Constants.h*Constants.c*diameter*diameter/(4*lambda);
-            irradiance = powerSource.getIrradiance().eval(lambda);
+            concentrationToPower = Math.PI*Constants.h*Constants.c*Math.pow(params.getDiameter(),2)/(4*lambda);
+            irradiance = params.getPowerSource().getIrradiance().eval(lambda);
             sideEfficiency = UnitIntegral.integrate(integrand);
 
-            result += diameter*irradiance*sideEfficiency*dLambda/concentrationToPower;
+            result += params.getDiameter()*irradiance*sideEfficiency*params.getDLambda()/concentrationToPower;
         }
 
         return result;

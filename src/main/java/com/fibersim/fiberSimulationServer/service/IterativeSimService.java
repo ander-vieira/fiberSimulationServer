@@ -48,7 +48,16 @@ public class IterativeSimService {
         double[] ll = lambdaRange.getLL(numLL);
         double dlambda = lambdaRange.getDLambda(numLL);
 
-        double Nsolconst = SideAbsorption.twoInterphases(sun, dyeDopants.get(0), pmma, clad, params.getDiameter(), 0.98, dlambda, ll);
+        double Nsolconst = SideAbsorption.twoInterphases(SideAbsorptionParams.builder()
+                        .powerSource(sun)
+                        .dyeDopants(dyeDopants)
+                        .mediumIn(pmma)
+                        .mediumOut(clad)
+                        .diameter(params.getDiameter())
+                        .cladRatio(0.98)
+                        .dLambda(dlambda)
+                        .ll(ll)
+                        .build());
 
         IterativeAttenuator iterativeAttenuator = new IterativeAttenuator(pmma, ll, dz);
         IterativeDyeDopant iterativeDyeDopant = new IterativeDyeDopant(IterativeDyeDopantParams.builder()
