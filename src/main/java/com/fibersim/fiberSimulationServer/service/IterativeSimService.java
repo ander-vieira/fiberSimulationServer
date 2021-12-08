@@ -1,9 +1,6 @@
 package com.fibersim.fiberSimulationServer.service;
 
-import com.fibersim.fiberSimulationServer.core.iterative.GeometricalValues;
-import com.fibersim.fiberSimulationServer.core.iterative.IterativeAttenuator;
-import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
-import com.fibersim.fiberSimulationServer.core.util.Constants;
+import com.fibersim.fiberSimulationServer.core.iterative.*;
 import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
@@ -51,53 +48,26 @@ public class IterativeSimService {
         double[] ll = lambdaRange.getLL(numLL);
         double dlambda = lambdaRange.getDLambda(numLL);
 
-        double[] sigmaabs = dyeDopants.get(0).getDyeDopant().getSigmaabs().getArray(ll);
-        double[] sigmaemi = dyeDopants.get(0).getDyeDopant().getSigmaemi().getArray(ll);
-        double sumEmi = 0;
-        for(double sigma: sigmaemi) sumEmi += sigma;
+        double Nsolconst = SideAbsorption.twoInterphases(sun, dyeDopants.get(0), pmma, clad, params.getDiameter(), 0.98, dlambda, ll);
 
         IterativeAttenuator iterativeAttenuator = new IterativeAttenuator(pmma, ll, dz);
-
-        double Nsolconst = SideAbsorption.twoInterphases(sun, dyeDopants.get(0), pmma, clad, params.getDiameter(), 0.98, dlambda, ll);
-        double[] Nabsconst = new double[numLL];
-        double[] Nestconst = new double[numLL];
-        double[] Pattconst = new double[numLL];
-        double[] PNconst1 = new double[numLL];
-        double[] PNconst2 = new double[numLL];
-        double concentrationToPower, nPMMA, beta, Kz;
-        for(int k = 0 ; k < numLL ; k++) {
-            concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
-            nPMMA = pmma.getRefractionIndex().eval(ll[k]);
-            beta = GeometricalValues.betaB(nPMMA);
-            Kz = GeometricalValues.KzB(nPMMA);
-
-//            Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
-            Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
-            Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = -Kz*dyeDopants.get(0).getConcentration()*sigmaabs[k]*dz;
-            PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dyeDopants.get(0).getDyeDopant().getTauRad();
-            PNconst2[k] = Kz*(sigmaabs[k]+sigmaemi[k])*dz;
-        }
+        IterativeDyeDopant iterativeDyeDopant = new IterativeDyeDopant(IterativeDyeDopantParams.builder()
+                .dyeDopantDTO(dyeDopants.get(0))
+                .medium(pmma)
+                .diameter(params.getDiameter())
+                .dz(dz)
+                .Nsolconst(Nsolconst)
+                .numZZ(numZZ)
+                .ll(ll)
+                .build());
 
         double[] finalP = new double[numLL];
-        double[] wabs = new double[numZZ-1];
-        double[] west = new double[numZZ-1];
-        double[] N2 = new double[numZZ-1];
-        double lambdaP, lambdaPleft, error, e, A, b, evalN2, oldLambdaP, oldLambdaPleft;
+        double lambdaP, lambdaPleft, error, e, oldLambdaP, oldLambdaPleft;
 
         do {
 
             //Update N2
-            for(int j = 0 ; j < numZZ-1 ; j++) {
-
-                A = 1/dyeDopants.get(0).getDyeDopant().getTauRad()+1/dyeDopants.get(0).getDyeDopant().getTauNR()+wabs[j]+west[j];
-                b = Nsolconst + dyeDopants.get(0).getConcentration()*wabs[j];
-
-                N2[j] = b/A;
-
-                wabs[j] = 0;
-                west[j] = 0;
-            }
+            iterativeDyeDopant.updateN2();
 
             double[] previousP = finalP.clone();
 
@@ -105,34 +75,30 @@ public class IterativeSimService {
                 //Propagate P to the right
                 lambdaP = 0;
                 for(int j = 0 ; j < numZZ-1 ; j++) {
-                    evalN2 = N2[j];
                     oldLambdaP = lambdaP;
 
                     //Update P
                     lambdaP += iterativeAttenuator.updateP(oldLambdaP, k);
-                    lambdaP += (Pattconst[k]+PNconst2[k]*evalN2)*oldLambdaP+PNconst1[k]*evalN2;
+                    lambdaP += iterativeDyeDopant.updateP(oldLambdaP, j, k);
 
                     //Update wabs and west
-                    wabs[j] += Nabsconst[k]*(oldLambdaP+lambdaP)/2;
-                    west[j] += Nestconst[k]*(oldLambdaP+lambdaP)/2;
+                    iterativeDyeDopant.updateW(oldLambdaP, lambdaP, j, k);
                 }
+
+                finalP[k] = lambdaP;
 
                 //Propagate P to the left
                 lambdaPleft = 0;
-                for(int j = numZZ-1 ; j > 0 ; j--) {
-                    evalN2 = N2[j-1];
+                for(int j = numZZ-2 ; j >= 0 ; j--) {
                     oldLambdaPleft = lambdaPleft;
 
                     //Update Pleft
                     lambdaPleft += iterativeAttenuator.updateP(oldLambdaPleft, k);
-                    lambdaPleft += (Pattconst[k]+PNconst2[k]*evalN2)*oldLambdaPleft+PNconst1[k]*evalN2;
+                    lambdaPleft += iterativeDyeDopant.updateP(oldLambdaPleft, j, k);
 
                     //Update wabs and west
-                    wabs[j-1] += Nabsconst[k]*(oldLambdaPleft+lambdaPleft)/2;
-                    west[j-1] += Nestconst[k]*(oldLambdaPleft+lambdaPleft)/2;
+                    iterativeDyeDopant.updateW(oldLambdaPleft, lambdaPleft, j, k);
                 }
-
-                finalP[k] = lambdaP;
             }
 
             error = 0;
