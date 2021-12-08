@@ -78,7 +78,7 @@ public class IterativeSimService {
             Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
             Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
-            Pattconst[k] = Kz*dyeDopants.get(0).getConcentration()*sigmaabs[k]*dz;
+            Pattconst[k] = -Kz*dyeDopants.get(0).getConcentration()*sigmaabs[k]*dz;
             PNconst1[k] = concentrationToPower*beta*sigmaemi[k]/sumEmi*dz/dyeDopants.get(0).getDyeDopant().getTauRad();
             PNconst2[k] = Kz*(sigmaabs[k]+sigmaemi[k])*dz;
         }
@@ -114,9 +114,7 @@ public class IterativeSimService {
 
                     //Update P
                     lambdaP += iterativeAttenuator.updateP(oldLambdaP, k);
-                    lambdaP -= Pattconst[k]*oldLambdaP;
-                    lambdaP += PNconst1[k]*evalN2;
-                    lambdaP += PNconst2[k]*evalN2*oldLambdaP;
+                    lambdaP += (Pattconst[k]+PNconst2[k]*evalN2)*oldLambdaP+PNconst1[k]*evalN2;
 
                     //Update wabs and west
                     wabs[j] += Nabsconst[k]*(oldLambdaP+lambdaP)/2;
@@ -131,9 +129,7 @@ public class IterativeSimService {
 
                     //Update Pleft
                     lambdaPleft += iterativeAttenuator.updateP(oldLambdaPleft, k);
-                    lambdaPleft -= Pattconst[k]*oldLambdaPleft;
-                    lambdaPleft += PNconst1[k]*evalN2;
-                    lambdaPleft += PNconst2[k]*evalN2*oldLambdaPleft;
+                    lambdaPleft += (Pattconst[k]+PNconst2[k]*evalN2)*oldLambdaPleft+PNconst1[k]*evalN2;
 
                     //Update wabs and west
                     wabs[j-1] += Nabsconst[k]*(oldLambdaPleft+lambdaPleft)/2;

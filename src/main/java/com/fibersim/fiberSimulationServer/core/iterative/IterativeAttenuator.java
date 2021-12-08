@@ -2,15 +2,14 @@ package com.fibersim.fiberSimulationServer.core.iterative;
 
 import com.fibersim.fiberSimulationServer.resources.resource.MediumResource;
 
-import java.util.Arrays;
-
 public class IterativeAttenuator {
     private final double[] Pattconst;
 
     public IterativeAttenuator(MediumResource medium, double[] ll, double dz) {
-        Pattconst = Arrays.stream(ll)
-                .map(lambda -> -GeometricalParams.KzB(medium.getRefractionIndex().eval(lambda))*medium.getAttenuation().eval(lambda)*dz)
-                .toArray();
+        Pattconst = new double[ll.length];
+        for(int k = 0 ; k < ll.length ; k++) {
+            Pattconst[k] = -GeometricalParams.KzB(medium.getRefractionIndex().eval(ll[k]))*medium.getAttenuation().eval(ll[k])*dz;
+        }
     }
 
     public double updateP(double oldP, int k) {
