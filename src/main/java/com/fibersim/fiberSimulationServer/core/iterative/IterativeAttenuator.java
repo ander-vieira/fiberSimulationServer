@@ -8,7 +8,7 @@ public class IterativeAttenuator {
     public IterativeAttenuator(MediumResource medium, double[] ll, double dz) {
         Pattconst = new double[ll.length];
         for(int k = 0 ; k < ll.length ; k++) {
-            Pattconst[k] = -GeometricalParams.KzB(medium.getRefractionIndex().eval(ll[k]))*medium.getAttenuation().eval(ll[k])*dz;
+            Pattconst[k] = -GeometricalValues.KzB(medium.getRefractionIndex().eval(ll[k]))*medium.getAttenuation().eval(ll[k])*dz;
         }
     }
 

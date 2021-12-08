@@ -1,6 +1,6 @@
 package com.fibersim.fiberSimulationServer.service;
 
-import com.fibersim.fiberSimulationServer.core.iterative.GeometricalParams;
+import com.fibersim.fiberSimulationServer.core.iterative.GeometricalValues;
 import com.fibersim.fiberSimulationServer.core.iterative.IterativeAttenuator;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
@@ -71,8 +71,8 @@ public class IterativeSimService {
         for(int k = 0 ; k < numLL ; k++) {
             double concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
             double nPMMA = pmma.getRefractionIndex().eval(ll[k]);
-            double beta = GeometricalParams.betaB(nPMMA);
-            double Kz = GeometricalParams.KzB(nPMMA);
+            double beta = GeometricalValues.betaB(nPMMA);
+            double Kz = GeometricalValues.KzB(nPMMA);
             double Isol = sun.getIrradiance().eval(ll[k]);
 
             Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
