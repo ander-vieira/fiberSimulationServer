@@ -4,7 +4,6 @@ import com.fibersim.fiberSimulationServer.core.iterative.GeometricalValues;
 import com.fibersim.fiberSimulationServer.core.iterative.IterativeAttenuator;
 import com.fibersim.fiberSimulationServer.core.iterative.SideAbsorption;
 import com.fibersim.fiberSimulationServer.core.util.Constants;
-import com.fibersim.fiberSimulationServer.core.util.LambdaFunction;
 import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.util.SimulationTimer;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
@@ -24,8 +23,6 @@ import java.util.List;
 @Service
 public class IterativeSimService {
     @Autowired
-    SimulationTimer simulationTimer;
-    @Autowired
     DyeDopantReader dyeDopantReader;
     @Autowired
     MediumReader mediumReader;
@@ -33,6 +30,7 @@ public class IterativeSimService {
     PowerSourceReader powerSourceReader;
 
     public IterativeSimResponseDTO dyeIterative(IterativeSimParamsDTO params) {
+        SimulationTimer simulationTimer = new SimulationTimer();
         simulationTimer.startTimer();
 
         double dz = 5e-5;
@@ -58,24 +56,22 @@ public class IterativeSimService {
         double sumEmi = 0;
         for(double sigma: sigmaemi) sumEmi += sigma;
 
-        LambdaFunction sideEfficiency = SideAbsorption.twoInterphases(params.getDiameter(), 0.98, dyeDopants.get(0), pmma, clad);
-
         IterativeAttenuator iterativeAttenuator = new IterativeAttenuator(pmma, ll, dz);
 
-        double Nsolconst = 0;
+        double Nsolconst = SideAbsorption.twoInterphases(sun, dyeDopants.get(0), pmma, clad, params.getDiameter(), 0.98, dlambda, ll);
         double[] Nabsconst = new double[numLL];
         double[] Nestconst = new double[numLL];
         double[] Pattconst = new double[numLL];
         double[] PNconst1 = new double[numLL];
         double[] PNconst2 = new double[numLL];
+        double concentrationToPower, nPMMA, beta, Kz;
         for(int k = 0 ; k < numLL ; k++) {
-            double concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
-            double nPMMA = pmma.getRefractionIndex().eval(ll[k]);
-            double beta = GeometricalValues.betaB(nPMMA);
-            double Kz = GeometricalValues.KzB(nPMMA);
-            double Isol = sun.getIrradiance().eval(ll[k]);
+            concentrationToPower = Math.PI * Constants.h * Constants.c * params.getDiameter() * params.getDiameter() / (4*ll[k]);
+            nPMMA = pmma.getRefractionIndex().eval(ll[k]);
+            beta = GeometricalValues.betaB(nPMMA);
+            Kz = GeometricalValues.KzB(nPMMA);
 
-            Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
+//            Nsolconst += params.getDiameter()*Isol*sideEfficiency.eval(ll[k])*dlambda/concentrationToPower;
             Nabsconst[k] = Kz*sigmaabs[k]/concentrationToPower;
             Nestconst[k] = Kz*sigmaemi[k]/concentrationToPower;
             Pattconst[k] = -Kz*dyeDopants.get(0).getConcentration()*sigmaabs[k]*dz;
