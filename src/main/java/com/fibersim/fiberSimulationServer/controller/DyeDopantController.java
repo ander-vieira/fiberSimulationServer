@@ -8,11 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dyeDopant")
 public class DyeDopantController {
     @Autowired
     DyeDopantService dyeDopantService;
+
+    @GetMapping("")
+    public List<String> listDyeDopants() {
+        return dyeDopantService.listDyeDopants();
+    }
+
+    @GetMapping("/all")
+    public List<DyeDopantDataDTO> listDyeDopantData() {
+        return dyeDopantService.listDyeDopantData();
+    }
 
     @GetMapping("/{name}")
     public DyeDopantDataDTO getDyeDopantData(@PathVariable String name) {

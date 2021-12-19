@@ -39,4 +39,8 @@ public class DyeDopantReader extends JsonDataReader<DyeDopantResource> {
                 .concentration(params.getConcentration())
                 .build()).collect(Collectors.toList());
     }
+
+    public List<DyeDopantResource> readAllDopants() {
+        return elementList;
+    }
 }

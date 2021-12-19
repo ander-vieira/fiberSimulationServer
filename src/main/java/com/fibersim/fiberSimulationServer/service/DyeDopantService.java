@@ -8,10 +8,25 @@ import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class DyeDopantService {
     @Autowired
     DyeDopantReader dyeDopantReader;
+
+    public List<String> listDyeDopants() {
+        List<DyeDopantResource> dyeDopantResourceList = dyeDopantReader.readAllDopants();
+
+        return dyeDopantResourceList.stream().map(DyeDopantResource::getDopant).collect(Collectors.toList());
+    }
+
+    public List<DyeDopantDataDTO> listDyeDopantData() {
+        List<DyeDopantResource> dyeDopantResourceList = dyeDopantReader.readAllDopants();
+
+        return dyeDopantResourceList.stream().map(DyeDopantDataDTO::new).collect(Collectors.toList());
+    }
 
     public DyeDopantDataDTO getDyeDopantData(String name) {
         return new DyeDopantDataDTO(dyeDopantReader.readDopant(name));
