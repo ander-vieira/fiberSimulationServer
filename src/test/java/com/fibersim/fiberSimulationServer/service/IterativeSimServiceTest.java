@@ -1,8 +1,8 @@
 package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
-import com.fibersim.fiberSimulationServer.dto.IterativeSimParamsDTO;
-import com.fibersim.fiberSimulationServer.dto.IterativeSimResponseDTO;
+import com.fibersim.fiberSimulationServer.dto.iterative.IterativeSimParamsDTO;
+import com.fibersim.fiberSimulationServer.dto.iterative.IterativeSimResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

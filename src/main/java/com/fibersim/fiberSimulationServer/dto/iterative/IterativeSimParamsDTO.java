@@ -1,5 +1,6 @@
-package com.fibersim.fiberSimulationServer.dto;
+package com.fibersim.fiberSimulationServer.dto.iterative;
 
+import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

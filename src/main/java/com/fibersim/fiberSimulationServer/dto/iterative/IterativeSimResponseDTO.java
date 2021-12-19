@@ -1,4 +1,4 @@
-package com.fibersim.fiberSimulationServer.dto;
+package com.fibersim.fiberSimulationServer.dto.iterative;
 
 import lombok.Builder;
 import lombok.Getter;
