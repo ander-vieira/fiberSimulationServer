@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.fibersim.fiberSimulationServer.resources.resource.LambdaCustomResource;
 import org.springframework.boot.jackson.JsonComponent;
 
-import javax.annotation.PostConstruct;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.IOException;

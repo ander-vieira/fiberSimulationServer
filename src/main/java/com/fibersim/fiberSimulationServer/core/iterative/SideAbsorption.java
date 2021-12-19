@@ -1,6 +1,9 @@
 package com.fibersim.fiberSimulationServer.core.iterative;
 
-import com.fibersim.fiberSimulationServer.core.util.*;
+import com.fibersim.fiberSimulationServer.core.util.Constants;
+import com.fibersim.fiberSimulationServer.core.util.MathUtils;
+import com.fibersim.fiberSimulationServer.core.util.UnitIntegral;
+import com.fibersim.fiberSimulationServer.core.util.UnitIntegrand;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
 
 public class SideAbsorption {
