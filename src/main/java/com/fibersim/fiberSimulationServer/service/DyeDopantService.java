@@ -29,7 +29,13 @@ public class DyeDopantService {
     }
 
     public DyeDopantDataDTO getDyeDopantData(String name) {
-        return new DyeDopantDataDTO(dyeDopantReader.readDopant(name));
+        DyeDopantResource dyeDopantResource = dyeDopantReader.readDopant(name);
+
+        if(dyeDopantResource == null) {
+            return null;
+        }
+
+        return new DyeDopantDataDTO(dyeDopantResource);
     }
 
     public DyeDopantPlotDTO plotDyeDopantSigmas(String name, int points) {
