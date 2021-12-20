@@ -2,6 +2,7 @@ package com.fibersim.fiberSimulationServer.resources.reader;
 
 import com.fibersim.fiberSimulationServer.dto.DyeDopantDTO;
 import com.fibersim.fiberSimulationServer.dto.DyeDopantParamsDTO;
+import com.fibersim.fiberSimulationServer.exception.MissingResourceException;
 import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class DyeDopantReader extends JsonDataReader<DyeDopantResource> {
         return objectMapper.convertValue(hashMap, DyeDopantResource.class);
     }
 
-    public DyeDopantResource readDopant(String dopant) {
+    public DyeDopantResource readDopant(String dopant) throws MissingResourceException {
         List<DyeDopantResource> matchingParams = elementList.stream()
                 .filter(params -> params.getDopant().equals(dopant))
                 .collect(Collectors.toList());
@@ -29,11 +30,11 @@ public class DyeDopantReader extends JsonDataReader<DyeDopantResource> {
         if(matchingParams.size() > 0) {
             return matchingParams.get(0);
         } else {
-            return null;
+            throw new MissingResourceException("Missing dye dopant "+dopant);
         }
     }
 
-    public List<DyeDopantDTO> readDopants(List<DyeDopantParamsDTO> dyeDopantParamsDTO) {
+    public List<DyeDopantDTO> readDopants(List<DyeDopantParamsDTO> dyeDopantParamsDTO) throws MissingResourceException {
         return dyeDopantParamsDTO.stream().map(params -> DyeDopantDTO.builder()
                 .dyeDopant(readDopant(params.getDopant()))
                 .concentration(params.getConcentration())
