@@ -7,37 +7,39 @@
         </a>
     </p>
 
-    <form action="" method="POST" id="simForm">
-        <h2>Iterative method simulation</h2>
+    <div id="app">
+        <form>
+            <h2>Iterative method simulation</h2>
+
+            <p>
+                Concentration:
+                <input v-model="concentration" type="text"> m<sup>-3</sup>
+            </p>
+
+            <p>
+                Diameter:
+                <input v-model="diameter" type="text"> m
+            </p>
+
+            <p>
+                Length:
+                <input v-model="length" type="text"> m
+            </p>
+
+            <p>{{simValidation}}</p>
+
+            <p>
+                <button type="button" v-on:click="submitForm">Simulate</button>
+                <button type="button" v-on:click="resetForm">Reset</button>
+            </p>
+        </form>
 
         <p>
-            Concentration:
-            <input type="text" name="concentration" value="1.5e22"> m<sup>-3</sup>
+            Result: {{simResult}}
         </p>
 
         <p>
-            Diameter:
-            <input type="text" name="diameter" value="1e-3"> m
+            Simulated in: {{simTime}}
         </p>
-
-        <p>
-            Length:
-            <input type="text" name="length" value="0.01"> m
-        </p>
-
-        <p id="simValidation"></p>
-
-        <p>
-            <input type="submit" value="Simulate">
-            <input type="reset" value="Reset">
-        </p>
-    </form>
-
-    <p>
-        Result: <span id="simResult"></span>
-    </p>
-
-    <p>
-        Simulated in: <span id="simTime"></span>
-    </p>
+    </div>
 </@>

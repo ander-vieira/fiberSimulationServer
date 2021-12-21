@@ -21,7 +21,7 @@ public class ViewController {
     public String mainPage(Model model) {
         log.info("Processing view mainPage");
 
-        model.addAttribute("appName", env.getProperty("application.name"));
+        loadMainLayout(model);
 
         return "mainPage";
     }
@@ -29,8 +29,12 @@ public class ViewController {
     public String iterative(Model model) {
         log.info("Processing view iterative");
 
-        model.addAttribute("appName", env.getProperty("application.name"));
+        loadMainLayout(model);
 
         return "iterative";
+    }
+
+    private void loadMainLayout(Model model) {
+        model.addAttribute("appName", env.getProperty("application.name"));
     }
 }

@@ -1,53 +1,74 @@
-function printResults(result) {
-    document.getElementById("simResult").innerText = result.lightP*1e6+" μW";
-    document.getElementById("simTime").innerText = result.elapsedTime+" s";
+function ajaxPostRequest(url, body, callback) {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if(this.readyState == 4) {
+            if(this.status == 200) {
+                callback(JSON.parse(this.responseText));
+            } else {
+                console.log("AJAX to "+url+" returned code "+this.status)
+            }
+        }
+    };
+
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(body));
 }
 
 document.addEventListener("DOMContentLoaded", function(){
-    var simForm = document.getElementById("simForm");
-    var simValidation = document.getElementById("simValidation");
-    var simResult = document.getElementById("simResult");
+    if(document.getElementById("app")) {
+        app = new Vue({
+          el: '#app',
+          data: {
+            concentration: 1.5e22,
+            diameter: 1e-3,
+            length: 0.1,
+            simValidation: "",
+            simResult: "",
+            simTime: ""
+          },
+          methods: {
+            "submitForm": function() {
+                if(isNaN(this.concentration)) {
+                    this.simValidation = "The concentration is not a number";
+                    this.simResult = "";
+                    return;
+                }
 
-    simForm.addEventListener("submit", function(e) {
-        e.preventDefault();
+                if(isNaN(this.diameter)) {
+                    this.simValidation = "The diameter is not a number";
+                    this.simResult = "";
+                    return;
+                }
 
-        var concentration = parseFloat(simForm.querySelector("[name=concentration]").value);
-        var diameter = parseFloat(simForm.querySelector("[name=diameter]").value);
-        var length = parseFloat(simForm.querySelector("[name=length]").value);
+                if(isNaN(this.length)) {
+                    this.simValidation = "The length is not a number";
+                    this.simResult = "";
+                    return;
+                }
 
-        if(isNaN(concentration)) {
-            simValidation.innerText = "The concentration is not a number";
-            simResult.innerText = "";
-            return;
-        }
+                this.simValidation = "";
+                this.simResult = "Please wait...";
 
-        if(isNaN(diameter)) {
-            simValidation.innerText = "The diameter is not a number";
-            simResult.innerText = "";
-            return;
-        }
-
-        if(isNaN(length)) {
-            simValidation.innerText = "The length is not a number";
-            simResult.innerText = "";
-            return;
-        }
-
-        simValidation.innerText = "";
-        simResult.innerText = "Please wait...";
-
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200) {
-                printResults(JSON.parse(this.responseText));
+                ajaxPostRequest("/iterative", {
+                    "dyeDopants": [
+                        {"dopant": "Rh6G",
+                         "concentration": this.concentration}
+                    ],
+                    "diameter": this.diameter,
+                    "length": this.length
+                }, function(result) {
+                    this.simResult = result.lightP*1e6+" μW";
+                    this.simTime = result.elapsedTime+" s";
+                }.bind(this));
+            },
+            "resetForm": function() {
+                this.concentration = 1.5e22;
+                this.diameter = 1e-3;
+                this.length = 0.1;
             }
-        }
-
-        xhttp.open("POST", "/iterative", true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(JSON.stringify({"dyeDopants": [{"dopant": "Rh6G", "concentration": concentration}], "diameter": diameter, "length": length}));
-
-        console.log("Simulating with diameter "+diameter+" and length "+length);
-    });
+          }
+        });
+    }
 });
