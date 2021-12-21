@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fiber Simulations</title>
+<#import "/layouts/mainLayout.ftl" as mainLayout>
 
-    <link rel="stylesheet" href="css/main.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="/js/simulate.js"></script>
-</head>
-<body>
-    <h1>Fiber Simulations</h1>
+<@mainLayout.layout>
     <p>
         <a href="/">
             Return to home
@@ -50,5 +40,4 @@
     <p>
         Simulated in: <span id="simTime"></span>
     </p>
-</body>
-</html>
+</@>
