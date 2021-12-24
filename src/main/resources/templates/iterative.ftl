@@ -7,7 +7,7 @@
         </a>
     </p>
 
-    <div id="app">
+    <div id="vueApp">
         <form>
             <h2>Iterative method simulation</h2>
 
@@ -42,4 +42,61 @@
             Simulated in: {{simTime}}
         </p>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            app = new Vue({
+              el: '#vueApp',
+              data: {
+                concentration: 1.5e22,
+                diameter: 1e-3,
+                length: 0.1,
+                simValidation: "",
+                simResult: "",
+                simTime: ""
+              },
+              methods: {
+                "submitForm": function() {
+                    if(isNaN(this.concentration)) {
+                        this.simValidation = "The concentration is not a number";
+                        this.simResult = "";
+                        return;
+                    }
+
+                    if(isNaN(this.diameter)) {
+                        this.simValidation = "The diameter is not a number";
+                        this.simResult = "";
+                        return;
+                    }
+
+                    if(isNaN(this.length)) {
+                        this.simValidation = "The length is not a number";
+                        this.simResult = "";
+                        return;
+                    }
+
+                    this.simValidation = "";
+                    this.simResult = "Please wait...";
+
+                    ajaxPostRequest("/iterative", {
+                        "dyeDopants": [
+                            {"dopant": "Rh6G",
+                             "concentration": this.concentration}
+                        ],
+                        "diameter": this.diameter,
+                        "length": this.length
+                    }, function(result) {
+                        this.simResult = result.lightP*1e6+" μW";
+                        this.simTime = result.elapsedTime+" s";
+                    }.bind(this));
+                },
+                "resetForm": function() {
+                    this.concentration = 1.5e22;
+                    this.diameter = 1e-3;
+                    this.length = 0.1;
+                }
+              }
+            });
+        });
+    </script>
 </@>
