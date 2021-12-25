@@ -31,7 +31,7 @@
                             ],
                             fill: false,
                             pointRadius: 0,
-                            borderColor: 'rgb(255,0,0)'
+                            borderColor: plotColor.get()
                         }
                         <#sep>,</#sep>
                     </#list>

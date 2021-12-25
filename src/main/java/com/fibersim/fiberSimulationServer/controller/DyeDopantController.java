@@ -48,7 +48,7 @@ public class DyeDopantController {
 
         try {
             model.addAttribute("dyeDopant", dyeDopantService.getDyeDopantData(name));
-            model.addAttribute("dyeDopantPlot", dyeDopantService.plotDyeDopantSigmas(name, 101));
+            model.addAttribute("dyeDopantPlot", dyeDopantService.plotDyeDopantSigmas(name, 301));
         } catch(MissingResourceException e) {
             log.error("Dye dopant "+name+" not found");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dopant not found");
