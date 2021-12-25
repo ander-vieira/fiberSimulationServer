@@ -2,6 +2,7 @@ package com.fibersim.fiberSimulationServer.controller;
 
 import com.fibersim.fiberSimulationServer.dto.iterative.IterativeSimParamsDTO;
 import com.fibersim.fiberSimulationServer.dto.iterative.IterativeSimResponseDTO;
+import com.fibersim.fiberSimulationServer.service.DyeDopantService;
 import com.fibersim.fiberSimulationServer.service.IterativeSimService;
 import com.fibersim.fiberSimulationServer.view.ViewLoader;
 import org.slf4j.Logger;
@@ -20,6 +21,9 @@ public class IterativeSimController {
     IterativeSimService iterativeSimService;
 
     @Autowired
+    DyeDopantService dyeDopantService;
+
+    @Autowired
     ViewLoader viewLoader;
 
     /* ****** VIEWS ****** */
@@ -29,6 +33,7 @@ public class IterativeSimController {
         log.info("Processing view iterative");
 
         viewLoader.loadMainLayout(model);
+        model.addAttribute("dyeDopants", dyeDopantService.listDyeDopantNames());
 
         return "iterative";
     }

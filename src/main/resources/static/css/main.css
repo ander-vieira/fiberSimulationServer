@@ -1,3 +1,13 @@
 body {
     margin: 0;
 }
+
+input[type="text"] {
+    width: 100%;
+    padding: 0.2em;
+}
+
+select {
+    width: 100%;
+    padding: 0.2em;
+}

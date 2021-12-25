@@ -1,4 +1,5 @@
 <#import "/layouts/mainLayout.ftl" as mainLayout>
+<#import "/utils.ftl" as utils>
 
 <@mainLayout.layout>
     <p>
@@ -12,18 +13,23 @@
             <h2>Iterative method simulation</h2>
 
             <p>
-                Concentration:
-                <input v-model="concentration" type="text"> m<sup>-3</sup>
+                Dopant:
+                <@utils.generateSelectVue dyeDopants "dopant" />
             </p>
 
             <p>
-                Diameter:
-                <input v-model="diameter" type="text"> m
+                Concentration (m<sup>-3</sup>)
+                <input v-model="concentration" type="text">
             </p>
 
             <p>
-                Length:
-                <input v-model="length" type="text"> m
+                Diameter (m)
+                <input v-model="diameter" type="text">
+            </p>
+
+            <p>
+                Length (m)
+                <input v-model="length" type="text">
             </p>
 
             <p>{{simValidation}}</p>
@@ -48,6 +54,7 @@
             app = new Vue({
               el: '#vueApp',
               data: {
+                dopant: "${dyeDopants?first}",
                 concentration: 1.5e22,
                 diameter: 1e-3,
                 length: 0.1,
@@ -80,7 +87,7 @@
 
                     ajaxPostRequest("/iterative", {
                         "dyeDopants": [
-                            {"dopant": "Rh6G",
+                            {"dopant": this.dopant,
                              "concentration": this.concentration}
                         ],
                         "diameter": this.diameter,
