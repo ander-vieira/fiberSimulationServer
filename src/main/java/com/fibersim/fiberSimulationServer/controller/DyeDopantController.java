@@ -35,7 +35,7 @@ public class DyeDopantController {
 
         viewLoader.loadMainLayout(model);
 
-        model.addAttribute("dyeDopants", dyeDopantService.listDyeDopantData());
+        model.addAttribute("dyeDopants", dyeDopantService.listDyeDopantNames());
 
         return "dyeDopant/dyeDopantList";
     }

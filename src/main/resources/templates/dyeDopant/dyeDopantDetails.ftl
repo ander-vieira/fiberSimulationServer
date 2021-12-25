@@ -3,8 +3,8 @@
 
 <@mainLayout.layout>
     <p>
-        <a href="/">
-            Return to home
+        <a href="/dyeDopant">
+            Return to list
         </a>
     </p>
 
