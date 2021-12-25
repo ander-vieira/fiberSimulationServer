@@ -18,4 +18,8 @@ public class DyeDopantDataDTO {
         this.minLambda = dyeDopantResource.getMinLambda();
         this.maxLambda = dyeDopantResource.getMaxLambda();
     }
+
+    public double getQuantumEfficiency() {
+        return tauNR/(tauNR+tauRad);
+    }
 }

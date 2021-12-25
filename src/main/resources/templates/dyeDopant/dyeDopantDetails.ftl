@@ -11,8 +11,13 @@
     <h2>Dye dopant: ${dyeDopant.name}</h2>
 
     <p>
-        <#assign quantumEfficiency = dyeDopant.tauNR/(dyeDopant.tauNR+dyeDopant.tauRad) />
-        Dopant: ${dyeDopant.name}, tauRad: ${dyeDopant.tauRad?string("0.##E0")}, tauNR: ${dyeDopant.tauNR?string("0.##E0")}, quantum efficiency: ${quantumEfficiency?string("0.####")}
+        tauRad: ${dyeDopant.tauRad?string("0.##E0")}
+    </p>
+    <p>
+        tauNR: ${dyeDopant.tauNR?string("0.##E0")}
+    </p>
+    <p>
+        Quantum efficiency: ${dyeDopant.quantumEfficiency?string("0.####")}
     </p>
 
     <div style="max-width: 80%; margin-left: 10%; margin-right: 10%;">
