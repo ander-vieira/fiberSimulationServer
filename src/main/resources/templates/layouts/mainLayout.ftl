@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/css/main.css" />
 
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
         <script src="/js/utils.js"></script>
     </head>
     <body>

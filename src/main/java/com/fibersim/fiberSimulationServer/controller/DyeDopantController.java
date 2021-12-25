@@ -40,6 +40,23 @@ public class DyeDopantController {
         return "dyeDopant/dyeDopantList";
     }
 
+    @GetMapping("/{name}")
+    public String dyeDopant(Model model, @PathVariable String name) {
+        log.info("Processing view dyeDopant/"+name);
+
+        viewLoader.loadMainLayout(model);
+
+        try {
+            model.addAttribute("dyeDopant", dyeDopantService.getDyeDopantData(name));
+            model.addAttribute("dyeDopantPlot", dyeDopantService.plotDyeDopantSigmas(name, 101));
+        } catch(MissingResourceException e) {
+            log.error("Dye dopant "+name+" not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dopant not found");
+        }
+
+        return "dyeDopant/dyeDopantDetails";
+    }
+
     /* ****** REST ENDPOINTS ****** */
 
     @PostMapping("")
