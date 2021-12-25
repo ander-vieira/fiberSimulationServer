@@ -2,7 +2,8 @@ package com.fibersim.fiberSimulationServer.service;
 
 import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.dto.dyeDopant.DyeDopantDataDTO;
-import com.fibersim.fiberSimulationServer.dto.dyeDopant.DyeDopantPlotDTO;
+import com.fibersim.fiberSimulationServer.dto.view.PlotDTO;
+import com.fibersim.fiberSimulationServer.dto.view.PlotYDataDTO;
 import com.fibersim.fiberSimulationServer.exception.MissingResourceException;
 import com.fibersim.fiberSimulationServer.resources.reader.DyeDopantReader;
 import com.fibersim.fiberSimulationServer.resources.resource.DyeDopantResource;
@@ -33,15 +34,23 @@ public class DyeDopantService {
         return new DyeDopantDataDTO(dyeDopantReader.readDopant(name));
     }
 
-    public DyeDopantPlotDTO plotDyeDopantSigmas(String name, int points) throws MissingResourceException {
+    public PlotDTO plotDyeDopantSigmas(String name, int points) throws MissingResourceException {
         DyeDopantResource dyeDopantResource = dyeDopantReader.readDopant(name);
 
         double[] ll = new LambdaRange(dyeDopantResource.getMinLambda(), dyeDopantResource.getMaxLambda()).getLL(points);
 
-        return DyeDopantPlotDTO.builder()
-                .lambda(ll)
-                .sigmaAbs(dyeDopantResource.getSigmaabs().getArray(ll))
-                .sigmaEmi(dyeDopantResource.getSigmaemi().getArray(ll))
+        return PlotDTO.builder()
+                .XData(ll)
+                .YDataList(List.of(
+                        PlotYDataDTO.builder()
+                                .name("Sigmaabs")
+                                .data(dyeDopantResource.getSigmaabs().getArray(ll))
+                                .build(),
+                        PlotYDataDTO.builder()
+                                .name("Sigmaemi")
+                                .data(dyeDopantResource.getSigmaemi().getArray(ll))
+                                .build()
+                ))
                 .build();
     }
 }

@@ -1,7 +1,7 @@
 package com.fibersim.fiberSimulationServer.controller;
 
 import com.fibersim.fiberSimulationServer.dto.dyeDopant.DyeDopantDataDTO;
-import com.fibersim.fiberSimulationServer.dto.dyeDopant.DyeDopantPlotDTO;
+import com.fibersim.fiberSimulationServer.dto.view.PlotDTO;
 import com.fibersim.fiberSimulationServer.exception.MissingResourceException;
 import com.fibersim.fiberSimulationServer.service.DyeDopantService;
 import com.fibersim.fiberSimulationServer.view.ViewLoader;
@@ -90,7 +90,7 @@ public class DyeDopantController {
 
     @PostMapping("/{name}/plotSigmas")
     @ResponseBody
-    public DyeDopantPlotDTO plotDyeDopantSigmas(@PathVariable String name, @RequestParam(required = false, defaultValue = "101") Integer points) {
+    public PlotDTO plotDyeDopantSigmas(@PathVariable String name, @RequestParam(required = false, defaultValue = "101") Integer points) {
         log.info("Processing POST request /dyeDopant/"+name+"/plotSigmas");
 
         try {

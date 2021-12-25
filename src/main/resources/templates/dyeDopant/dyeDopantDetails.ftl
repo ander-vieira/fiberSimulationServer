@@ -19,8 +19,5 @@
         <canvas id="sigmasChart" width="400" height="400"></canvas>
     </div>
 
-    <#assign yDataList = [{"name": "Sigmaabs", "data": dyeDopantPlot.sigmaAbs, "color": "rgba(255, 0, 0, 1)"},
-        {"name": "Sigmaemi", "data": dyeDopantPlot.sigmaEmi, "color": "rgba(0, 255, 0, 1)"}
-    ]/>
-    <@utils.plotLineChartScript "sigmasChart" dyeDopantPlot.lambda yDataList/>
+    <@utils.plotLineChartScript chartId="sigmasChart" plotData=dyeDopantPlot/>
 </@>

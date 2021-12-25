@@ -6,14 +6,7 @@
     </select>
 </#macro>
 
-<#macro plotLineChartScript chartId xData yDataList>
-    <#assign maxValue = 0 />
-    <#list yDataList as yData>
-        <#if maxValue < yData.data?max>
-            <#assign maxValue = yData.data?max />
-        </#if>
-    </#list>
-
+<#macro plotLineChartScript chartId plotData>
     <script>
         const ctx = document.getElementById('${chartId}').getContext('2d');
 
@@ -21,13 +14,13 @@
             type: 'line',
             data: {
                 labels: [
-                    <#list xData as x>
+                    <#list plotData.XData as x>
                         ${x?string("0.##E0")}
                         <#sep>,</#sep>
                     </#list>
                 ],
                 datasets: [
-                    <#list yDataList as yData>
+                    <#list plotData.YDataList as yData>
                         {
                             label: '${yData.name}',
                             data: [
@@ -38,8 +31,7 @@
                             ],
                             fill: false,
                             pointRadius: 0,
-                            backgroundColor: '${yData.color}',
-                            borderColor: '${yData.color}'
+                            borderColor: 'rgb(255,0,0)'
                         }
                         <#sep>,</#sep>
                     </#list>
@@ -51,7 +43,7 @@
                     },
                     yAxes: {
                         beginAtZero: true,
-                        max: ${maxValue?string("0.##E0")},
+                        max: ${plotData.maxYValue?string("0.##E0")},
                         ticks: {
                             format: { maximumSignificantDigits: 4 },
                             count: 11
