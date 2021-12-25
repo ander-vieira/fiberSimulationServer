@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/dyeDopant")
 public class DyeDopantController {
-    private final Logger log = LoggerFactory.getLogger(ViewController.class);
+    private final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     DyeDopantService dyeDopantService;
@@ -37,7 +37,7 @@ public class DyeDopantController {
 
         model.addAttribute("dyeDopants", dyeDopantService.listDyeDopantData());
 
-        return "dyeDopantList";
+        return "dyeDopant/dyeDopantList";
     }
 
     /* ****** REST ENDPOINTS ****** */

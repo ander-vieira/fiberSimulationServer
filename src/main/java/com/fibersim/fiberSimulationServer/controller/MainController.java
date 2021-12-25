@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("")
-public class ViewController {
-    private final Logger log = LoggerFactory.getLogger(ViewController.class);
+public class MainController {
+    private final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     private ViewLoader viewLoader;
@@ -23,6 +23,6 @@ public class ViewController {
 
         viewLoader.loadMainLayout(model);
 
-        return "mainPage";
+        return "index";
     }
 }

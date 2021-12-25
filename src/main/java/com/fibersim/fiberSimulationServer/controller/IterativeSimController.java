@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/iterative")
 public class IterativeSimController {
-    private final Logger log = LoggerFactory.getLogger(ViewController.class);
+    private final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     IterativeSimService iterativeSimService;
@@ -35,7 +35,7 @@ public class IterativeSimController {
         viewLoader.loadMainLayout(model);
         model.addAttribute("dyeDopants", dyeDopantService.listDyeDopantNames());
 
-        return "iterative";
+        return "iterative/iterative";
     }
 
     /* ****** REST ENDPOINTS ****** */
