@@ -17,7 +17,7 @@ public class DyeDopantService {
     @Autowired
     DyeDopantReader dyeDopantReader;
 
-    public List<String> listDyeDopants() {
+    public List<String> listDyeDopantNames() {
         return dyeDopantReader.readAllDopants().stream()
                 .map(DyeDopantResource::getDopant)
                 .collect(Collectors.toList());
