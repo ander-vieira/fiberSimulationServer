@@ -54,7 +54,33 @@ public class ElementTest {
     @Test
     @Tag("UnitTest")
     public void collectorElementTest() {
-        //TODO
+        LambdaRange lambdaRange = new LambdaRange(440e-9, 740e-9);
+
+        Mockito.when(phase.intersectionPoint(Mockito.any(Vector3.class), Mockito.any(Vector3.class))).thenReturn((double)1);
+        Mockito.when(phase.getNormalVector(Mockito.any(Vector3.class))).thenReturn(Vector3.X);
+
+        CollectorElement element = new CollectorElement(phase, lambdaRange.getLL(11));
+        element.setCheck(new ZIntervalCheck(0, 1));
+
+        Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
+
+        Assertions.assertEquals(1, element.intersectionPoint(ray1), 1e-12);
+
+        Assertions.assertTrue(ray1.alive());
+        Assertions.assertEquals(0, element.getTotalPower(), 1e-12);
+        element.process(ray1, 1);
+        Assertions.assertFalse(ray1.alive());
+        Assertions.assertEquals(1, element.getFinalPower(0), 1e-12);
+        Assertions.assertEquals(1, element.getTotalPower(), 1e-12);
+
+        Ray ray2 = new Ray(Vector3.O, Vector3.X.scale(-1), 1, 0);
+
+        Assertions.assertTrue(ray2.alive());
+        Assertions.assertEquals(1, element.getTotalPower(), 1e-12);
+        element.process(ray2, 1);
+        Assertions.assertTrue(ray2.alive());
+        Assertions.assertEquals(1, element.getFinalPower(0), 1e-12);
+        Assertions.assertEquals(1, element.getTotalPower(), 1e-12);
     }
 
     @Test
