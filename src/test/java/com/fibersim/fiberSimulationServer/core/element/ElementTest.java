@@ -17,7 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class ElementTest {
     @Mock
-    MediumResource mediumResource;
+    MediumResource mediumResource1;
+    @Mock
+    MediumResource mediumResource2;
     @Mock
     Phase phase;
 
@@ -26,9 +28,9 @@ public class ElementTest {
     public void attenuatorElementTest() {
         LambdaRange lambdaRange = new LambdaRange(440e-9, 740e-9);
 
-        Mockito.when(mediumResource.getAttenuation()).thenReturn(LambdaConstantResource.builder().value(0).build());
+        Mockito.when(mediumResource1.getAttenuation()).thenReturn(LambdaConstantResource.builder().value(0).build());
 
-        AttenuatorElement element = new AttenuatorElement(mediumResource, lambdaRange.getLL(11));
+        AttenuatorElement element = new AttenuatorElement(mediumResource1, lambdaRange.getLL(11));
         element.setCheck(new ZIntervalCheck(0, 1));
 
         Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
@@ -88,6 +90,26 @@ public class ElementTest {
     @Test
     @Tag("UnitTest")
     public void refractorElementTest() {
-        //TODO
+        LambdaRange lambdaRange = new LambdaRange(440e-9, 740e-9);
+
+        Mockito.when(mediumResource1.getRefractionIndex()).thenReturn(LambdaConstantResource.builder().value(1.3).build());
+        Mockito.when(mediumResource2.getRefractionIndex()).thenReturn(LambdaConstantResource.builder().value(1.3).build());
+        Mockito.when(phase.intersectionPoint(Mockito.any(Vector3.class), Mockito.any(Vector3.class))).thenReturn((double)1);
+        Mockito.when(phase.getNormalVector(Mockito.any(Vector3.class))).thenReturn(Vector3.X);
+
+        RefractorElement element = new RefractorElement(phase, mediumResource1, mediumResource2, lambdaRange.getLL(11));
+        element.setCheck(new ZIntervalCheck(0, 1));
+
+        Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
+
+        double ds = element.intersectionPoint(ray1);
+        Assertions.assertEquals(1, ds, 1e-12);
+        element.process(ray1, ds);
+        Assertions.assertEquals(0, ray1.vel.minus(Vector3.X).norm(), 1e-12);
+
+        Ray ray2 = new Ray(Vector3.O, Vector3.X.scale(-1), 1, 0);
+
+        element.process(ray2, ds);
+        Assertions.assertEquals(0, ray2.vel.plus(Vector3.X).norm(), 1e-12);
     }
 }
