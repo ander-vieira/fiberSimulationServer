@@ -2,6 +2,7 @@ package com.fibersim.fiberSimulationServer.core.element;
 
 import com.fibersim.fiberSimulationServer.core.basics.Ray;
 import com.fibersim.fiberSimulationServer.core.check.ZIntervalCheck;
+import com.fibersim.fiberSimulationServer.core.phase.Phase;
 import com.fibersim.fiberSimulationServer.core.util.LambdaRange;
 import com.fibersim.fiberSimulationServer.core.util.Vector3;
 import com.fibersim.fiberSimulationServer.resources.resource.LambdaConstantResource;
@@ -17,17 +18,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ElementTest {
     @Mock
     MediumResource mediumResource;
+    @Mock
+    Phase phase;
 
     @Test
     @Tag("UnitTest")
     public void attenuatorElementTest() {
         LambdaRange lambdaRange = new LambdaRange(440e-9, 740e-9);
-        Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
 
         Mockito.when(mediumResource.getAttenuation()).thenReturn(LambdaConstantResource.builder().value(0).build());
 
         AttenuatorElement element = new AttenuatorElement(mediumResource, lambdaRange.getLL(11));
         element.setCheck(new ZIntervalCheck(0, 1));
+
+        Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
 
         Assertions.assertEquals(Double.POSITIVE_INFINITY, element.intersectionPoint(ray1), 1e-12);
 
@@ -36,8 +40,12 @@ public class ElementTest {
         Assertions.assertFalse(ray1.alive());
 
         Ray ray2 = new Ray(new Vector3(0, 0, 1.5), Vector3.X, 1, 0);
+
+        double ds = element.intersectionPoint(ray2);
+        Assertions.assertTrue(ds >= 0);
+
         Assertions.assertTrue(ray2.alive());
-        element.process(ray2, 1);
+        element.process(ray2, ds);
         Assertions.assertTrue(ray2.alive());
     }
 
@@ -56,7 +64,25 @@ public class ElementTest {
     @Test
     @Tag("UnitTest")
     public void mirrorElementTest() {
-        //TODO
+        MirrorElement element = new MirrorElement(phase);
+        element.setCheck(new ZIntervalCheck(0, 1));
+
+        Mockito.when(phase.intersectionPoint(Mockito.any(Vector3.class), Mockito.any(Vector3.class))).thenReturn((double)1);
+        Mockito.when(phase.getNormalVector(Mockito.any(Vector3.class))).thenReturn(Vector3.X);
+
+        Ray ray1 = new Ray(Vector3.O, Vector3.X, 1, 0);
+
+        double ds = element.intersectionPoint(ray1);
+        Assertions.assertEquals(1, element.intersectionPoint(ray1), 1e-12);
+        element.process(ray1, ds);
+        Assertions.assertEquals(0, ray1.vel.plus(Vector3.X).norm(), 1e-12);
+
+        Ray ray2 = new Ray(new Vector3(0, 0, 1.5), Vector3.X, 1, 0);
+
+        ds = element.intersectionPoint(ray2);
+        Assertions.assertEquals(1, element.intersectionPoint(ray2), 1e-12);
+        element.process(ray2, ds);
+        Assertions.assertEquals(0, ray2.vel.minus(Vector3.X).norm(), 1e-12);
     }
 
     @Test
